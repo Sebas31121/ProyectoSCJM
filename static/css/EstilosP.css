@@ -1,0 +1,112 @@
+html {
+    box-sizing: border-box;
+}
+
+#test {
+    background-image: url('../IMG/NegocioX.jpg');
+    background-size: 100% 100%;
+    /*background-image: linear-gradient(0, #ade5ff 0, #7dcefb 25%, #3cb5f2 50%, #009ce9 75%, #0085e0 100%);*/
+    padding-top: 3.125rem;
+    padding-bottom: 14.375rem   ;
+}
+
+#nombre{
+    color: #0080ff;
+    margin: 0% 10%;
+}
+
+#eslogan{
+    color: white;
+    margin: 0% 10%;
+}
+
+body {
+    margin: 0;
+    background-color: white;
+}
+
+#testb {
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: #212529;
+}
+
+#mision {
+    display: flex;
+    text-align: center;
+    font-size: 25px;
+    align-items: center;
+    margin: 1% 15%;
+    gap: 15rem;
+}
+
+#vision {
+    display: flex;
+    text-align: center;
+    font-size: 25px;
+    align-items: center;
+    margin: 1% 15%;
+    gap: 15rem;
+}
+
+#logo {
+    width: 7rem;
+    height: auto;
+    border-radius: 10px;
+}
+
+/*Las mamadas con Jann y el parcerito
+.testeando {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 0 3%;
+}*/
+
+#about {
+    display: flex;
+    text-align: center;
+    margin: 0 3%;
+    flex-direction: column;
+}
+
+#center {
+    display: flex;
+    text-align: center;
+    font-size: 25px;
+    align-items: center;
+    margin: 1% 15%;
+    gap: 25rem;
+}
+
+#mensaje {
+    background-color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1.75rem;
+    text-align: center;
+    color: white;
+}
+
+#nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#testm {
+    display: flex;
+    color: white;
+    margin: 0 1%;
+}
+
+#demo {
+    margin: 1% 10%;
+}
+
+#modal {
+    cursor: pointer;
+}
+
+/*#foot {
+    background-image: linear-gradient(180deg, #ade5ff 0, #7dcefb 25%, #3cb5f2 50%, #009ce9 75%, #0085e0 100%);
+}*/
