@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from .forms import CategoryForm,SubCategoryForm
-
+from .forms import CategoryForm,SubCategoryForm,ProductForm
 def createCategoryView (request):
     template_name='inventory/inventory_form.html'
     form_inventory={}
@@ -24,3 +23,15 @@ def createSubcategoryView (request):
         if form_inventory.is_valid():
             form_inventory.save()
     return render(request,template_name,{'title':'SCJM-Crear Subcategoria','form':form_inventory})
+
+def createProductView (request):
+    template_name='inventory/inventory_form.html'
+    form_inventory={}
+    if request.method=='GET':
+        form_inventory=ProductForm()
+    if request.method=='POST':
+        name=request.POST.get("name")
+        form_inventory=ProductForm(request.POST)
+        if form_inventory.is_valid():
+            form_inventory.save()
+    return render(request,template_name,{'title':'SCJM-Crear Producto','form':form_inventory})

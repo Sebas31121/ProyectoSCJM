@@ -20,5 +20,13 @@ class SubCategoryForm(forms.ModelForm):
             super().__init__(*arg,**kwargs)
             for field in iter(self.fields):
                 self.fields[field].widget.attrs.update({"class":"form-control"})
-    
-    
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model=Product
+        fields=['name','description','price','stock']
+
+        def __init__(self,*arg,**kwargs) -> None:
+            super().__init__(*arg,**kwargs)
+            for field in iter(self.fields):
+                self.fields[field].widget.attrs.update({"class":"form-control"})

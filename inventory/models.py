@@ -19,3 +19,8 @@ class Product(models.Model):
     description=models.CharField(max_length=200,help_text="Descripción del producto")
     price=models.FloatField(default=0,help_text="Precio del producto")
     stock=models.IntegerField(default=0,help_text="En existencia")
+    category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name="product_category",blank=True,null=True)
+    subcategory=models.ForeignKey(SubCategory,on_delete=models.CASCADE,related_name="product_subcategory",blank=True,null=True)
+
+    def __str__(self) -> str:
+        return f"{self.name} - {self.description} - {self.price} - {self.stock}"
