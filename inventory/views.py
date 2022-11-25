@@ -11,7 +11,7 @@ def createCategoryView (request):
         form_inventory=CategoryForm(request.POST)
         if form_inventory.is_valid():
             form_inventory.save()
-    return render(request,template_name,{'title':'SCJM-Crear Categoria','form':form_inventory})
+    return render(request,template_name,{'title':'SCJM-Crear Categoria','title_form':"Crear Categoria",'form':form_inventory})
 
 def editCategoryView (request,pk):
     category = get_object_or_404(Category,id=pk)
@@ -21,7 +21,7 @@ def editCategoryView (request,pk):
         categoryform.save()
         return HttpResponseRedirect('/inventory/new/category')
 
-    return render(request,template_name,{'title':'SCJM-Actualizar Categoria','form':categoryform})
+    return render(request,template_name,{'title':'SCJM-Actualizar Categoria','title_form':"Actualizar Categoria",'form':categoryform,"obj":category})
 def createSubcategoryView (request):
     template_name='inventory/inventory_form.html'
     form_inventory={}
@@ -32,7 +32,7 @@ def createSubcategoryView (request):
         form_inventory=SubCategoryForm(request.POST)
         if form_inventory.is_valid():
             form_inventory.save()
-    return render(request,template_name,{'title':'SCJM-Crear Subcategoria','form':form_inventory})
+    return render(request,template_name,{'title':'SCJM-Crear Subcategoria','title_form':"Crear Subcategoria",'form':form_inventory})
 
 def editSubcategoryView (request,pk):
     subcategory = get_object_or_404(SubCategory,id=pk)
@@ -42,7 +42,7 @@ def editSubcategoryView (request,pk):
         subcategoryform.save()
         return HttpResponseRedirect('/inventory/new/subcategory')
 
-    return render(request,template_name,{'title':'SCJM-Actualizar Subcategoria','form':subcategoryform})
+    return render(request,template_name,{'title':'SCJM-Actualizar Subcategoria','title_form':"Actualizar Subcategoria",'form':subcategoryform})
 
 def createProductView (request):
     template_name='inventory/inventory_form.html'
@@ -54,7 +54,7 @@ def createProductView (request):
         form_inventory=ProductForm(request.POST)
         if form_inventory.is_valid():
             form_inventory.save()
-    return render(request,template_name,{'title':'SCJM-Crear Producto','form':form_inventory})
+    return render(request,template_name,{'title':'SCJM-Crear Producto','title_form':"Crear Producto",'form':form_inventory})
 
 def editProductView (request,pk):
     product = get_object_or_404(Product,id=pk)
@@ -64,4 +64,4 @@ def editProductView (request,pk):
         productform.save()
         return HttpResponseRedirect('/inventory/new/product')
 
-    return render(request,template_name,{'title':'SCJM-Actualizar Producto','form':productform})
+    return render(request,template_name,{'title':'SCJM-Actualizar Producto','title_form':"Actualizar Producto",'form':productform})

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventory',
     'shared', 
-    'SCJM'
+    'SCJM',
+    'core',
 ]
 
 MIDDLEWARE = [
