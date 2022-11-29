@@ -1,0 +1,4 @@
+{%if request.user.is_authenticated%}
+<h1>Hola {{request.user.username}}</h1>
+{%endif%}
+<h1>Esto lo puede ver todo el mundo</h1>
