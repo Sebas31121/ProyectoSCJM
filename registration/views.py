@@ -10,3 +10,6 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('login')
     form_class = UserRegistrationForm
     success_menssage = 'Usuario registrado correctamente'
+
+def profile(request):
+    return render(request,'registration/profile.html')
