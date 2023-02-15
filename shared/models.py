@@ -6,5 +6,5 @@ class CommonModel(models.Model):
     status=models.BooleanField(default=False)
     created=models.DateTimeField(auto_now_add=True)
     modified=models.DateTimeField(auto_now=True)
-    #user_created=models.ForeignKey(User,on_delete=models.CASCADE)
+    user_created=models.ForeignKey(User,on_delete=models.CASCADE,default=None)
     user_modified=models.IntegerField(blank=True, null=True)

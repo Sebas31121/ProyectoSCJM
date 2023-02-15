@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView
 from .models import FacturaBase, FacturaDetalle
 from django.contrib.auth.decorators import login_required, permission_required
 
-class FacturaView(SinPrivilegiosTemplate, ListView):
+class FacturaView(ListView):
     model = FacturaBase
     template_name = 'factura/factura_list.html'
     context_object_name = 'obj'
@@ -16,15 +16,13 @@ class FacturaView(SinPrivilegiosTemplate, ListView):
 def facturas(request, id=None):
     template_name = 'factura/facturas.html'
     detalle = {}
-    cliente = Cliente.objects.filter(estado=True)
-
+    
     if request.method == "GET":
         enc = FacturaBase.objects.filter(pk=id).first()
         if not enc:
             encabezado = {
                 'id': 0,
                 'fecha': datetime.datetime.today(),
-                'cliente': 0,
                 'sub_total': 0.00,
                 'descuento': 0.00,
                 'total': 0.00,
@@ -34,24 +32,20 @@ def facturas(request, id=None):
             encabezado = {
                 'id': enc.id,
                 'fecha': datetime.datetime.today(),
-                'cliente': enc.cliente,
                 'sub_total': enc.sub_total,
                 'descuento': enc.descuento,
                 'total': enc.total,
             }
             detalle = FacturaDetalle.objects.filter(factura=enc)
 
-        context = {"enc": encabezado, "det": detalle, "clientes": cliente}
+        context = {"enc": encabezado, "det": detalle}
 
     if request.method == 'POST':
-        cliente = request.POST.get("enc_cliente")
         fecha = request.POST.get("fecha")
-        clien = Cliente.objects.get(pk=cliente)
 
         # si no hay id significa que la factura es nueva
         if not id:
             enc = FacturaBase(
-                cliente=clien,
                 fecha=fecha,
                 user=request.user
             )
@@ -61,7 +55,6 @@ def facturas(request, id=None):
         else:
             enc = FacturaBase.objects.filter(pk=id).first()
             if enc:
-                enc.cliente = clien
                 enc.user_modification = request.user.id
                 enc.save()
         if not id:
@@ -77,7 +70,6 @@ def facturas(request, id=None):
 
         pro = Product.objects.get(codigo=codigo)
         det = FacturaBase(
-            user=request.user,
             factura=enc,
             producto=pro,
             cantidad=cantidad,
