@@ -1,4 +1,5 @@
 from django.shortcuts import render,HttpResponseRedirect,get_object_or_404
+from django.views.generic import ListView
 from .forms import CategoryForm,SubCategoryForm,ProductForm
 from .models import Category,SubCategory,Product
 from django.contrib.auth.decorators import login_required
@@ -61,6 +62,12 @@ def createProductView (request):
         if form_inventory.is_valid():
             form_inventory.save()
     return render(request,template_name,{'title':'SCJM-Crear Producto','title_form':"Crear Producto",'form':form_inventory})
+
+
+class ListProductView(ListView):
+    template_name = "inventory/inventory_list.html"
+    model = Product
+    context_object_name = "products"
 
 @login_required(login_url='/account/login/')
 def editProductView (request,pk):
