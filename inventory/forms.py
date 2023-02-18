@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, SubCategory, Product
+from .models import Category, SubCategory, Product, Unity
 
 
 class CategoryForm(forms.ModelForm):
@@ -23,11 +23,21 @@ class SubCategoryForm(forms.ModelForm):
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
 
+class UnityForm(forms.ModelForm):
+    class Meta:
+        model = Unity
+        fields = ['name']
+
+    def __init__(self, *arg, **kwargs) -> None:
+        super(UnityForm, self).__init__(*arg, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({"class": "form-control mt-1"})
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'stock','category','subcategory']
+        fields = ['name', 'description', 'price', 'stock', 'unity','category','subcategory']
 
     def __init__(self, *arg, **kwargs) -> None:
         super(ProductForm, self).__init__(*arg, **kwargs)

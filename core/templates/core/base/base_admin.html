@@ -13,11 +13,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{% static 'img/favicon/favicon.ico' %}" />
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
   <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="{% static 'vendor/fonts/boxicons.css' %}" />
   <!-- Core CSS -->
@@ -41,9 +39,9 @@
       <!-- Menu -->
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="index.html" class="app-brand-link">
+          <a href="{% url 'profile' %}" class="app-brand-link">
             <span class="app-brand-logo demo">
-              <!-- LOGO HERE -->
+              <img src="{% static 'img/avatars/Logo.jpg'%}" style="height:3rem;width:3rem;border-radius:3rem;">
             </span>
             <span class="app-brand-text demo menu-text fw-bolder ms-2">{{request.user.username}}</span>
           </a>
@@ -74,17 +72,22 @@
               </li>
               <li class="menu-item">
                 <a href="{% url 'inventory_category' %}" class="menu-link">
-                  <div data-i18n="Without menu">Crear Categoria</div>
+                  <div data-i18n="Without menu">Crear categoria</div>
                 </a>
               </li>
               <li class="menu-item">
                 <a href="{% url 'inventory_subcategory' %}" class="menu-link">
-                  <div data-i18n="Without navbar">Crear Subcategoria</div>
+                  <div data-i18n="Without navbar">Crear subcategoria</div>
                 </a>
               </li>
               <li class="menu-item ">
                 <a href="{% url 'inventory_product' %}" class="menu-link">
-                  <div data-i18n="Container">Crear Producto</div>
+                  <div data-i18n="Container">Crear producto</div>
+                </a>
+              </li>
+              <li class="menu-item ">
+                <a href="{% url 'inventory_unity' %}" class="menu-link">
+                  <div data-i18n="Container">Crear unidad de medida</div>
                 </a>
               </li>
             </ul>

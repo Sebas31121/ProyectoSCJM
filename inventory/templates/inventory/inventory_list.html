@@ -11,6 +11,7 @@
       <thead>
         <tr>
           <th>Nombre</th>
+          <th>Unidad de medida</th>
           <th>Cantidad</th>
           <th>Precio</th>
           <th>Acciones</th>
@@ -20,6 +21,7 @@
         {% for product in products %}
         <tr>
           <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{product.name}}</strong></td>
+          <td>{{product.unity}}</td>
           <td>{{product.stock}}</td>
           <td>{{product.price}}</td>
           <td>
@@ -28,10 +30,8 @@
                 <i class="bx bx-dots-vertical-rounded"></i>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'inventory_update_product' product.id %}"><i
-                    class="bx bx-edit-alt me-1"></i>Editar producto</a>
-                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>Eliminar
-                  producto</a>
+                <a class="dropdown-item" href="{% url 'inventory_update_product' product.id %}"><i class="bx bx-edit-alt me-1"></i>Editar producto</a>
+                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>Eliminar producto</a>
               </div>
             </div>
           </td>
