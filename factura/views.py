@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-import datetime
+from django import datetime
 from django.contrib import messages
 from inventory.models import Product
 from django.views.generic import ListView, CreateView, UpdateView
@@ -42,7 +42,6 @@ def facturas(request, id=None):
 
     if request.method == 'POST':
         fecha = request.POST.get("fecha")
-
         # si no hay id significa que la factura es nueva
         if not id:
             enc = FacturaBase(
@@ -77,12 +76,9 @@ def facturas(request, id=None):
             sub_total=s_total,
             descuento=descuento,
             total=total,
-
         )
-
         if det:
             det.save()
-
         return redirect('factura_edit', id=id)
 
     return render(request, template_name, context)

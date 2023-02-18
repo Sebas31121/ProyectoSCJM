@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+  {% block head%}
   <head>
     <meta charset="utf-8" />
     <meta name="viewport"
@@ -34,6 +35,7 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{% static 'js/config.js' %}"></script>
   </head>
+  {% endblock head%}
   <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
