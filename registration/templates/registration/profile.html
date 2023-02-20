@@ -12,8 +12,7 @@
     {%if request.user.is_authenticated%}
     <h1>Hola {{request.user.username}}</h1>
     {%endif%}
-    <h1></h1>
-    <button>Cerrar sesión</button>
+    <a href="{% url 'logout' %}"><button>Cerrar sesión</button></a>
     <a href="{% url 'index' %}"><button>Volver</button></a>
 </body>
 

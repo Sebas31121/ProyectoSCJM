@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from .form import UserRegistrationForm
+from django.contrib.auth.views import LogoutView 
+
 
 # Create your views here.
 
@@ -13,3 +15,6 @@ class SignUpView(CreateView):
 
 def profile(request):
     return render(request,'registration/profile.html')
+
+class SignOutView(LogoutView):
+    pass
