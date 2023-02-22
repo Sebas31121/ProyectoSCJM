@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'SCJM',
     'core',
     'registration',
-    'factura',
-    'mesero',
+    'bill',
+    'order',
+    'chasbox',
 ]
 
 MIDDLEWARE = [
