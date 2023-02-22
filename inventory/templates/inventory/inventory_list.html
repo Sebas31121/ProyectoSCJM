@@ -1,42 +1,45 @@
 {% extends 'core/base/base_admin.html' %}
 {% load static %}
-            <!-- Content -->
-            {% block page_content%}
-            <div class="card">
-                <h5 class="card-header">Table Dark</h5>
-                <div class="table-responsive text-nowrap">
-                  <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th>Nombre</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                        {% for product in products %}
-                      <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{product.name}}</strong></td>
-                        <td>{{product.stock}}</td>
-                        <td>{{product.price}}</td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="{% url 'inventory_update_product' product.id %}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                              <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      {%endfor%}
-                    </tbody>
-                  </table>
-                </div>
+<!-- Content -->
+{% block page_content%}
+<div class="card">
+  <center>
+    <h5 class="card-header">INVENTARIO</h5>
+  </center>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Unidad de medida</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        {% for product in products %}
+        <tr>
+          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{product.name}}</strong></td>
+          <td>{{product.unity}}</td>
+          <td>{{product.stock}}</td>
+          <td>{{product.price}}</td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'inventory_update_product' product.id %}"><i class="bx bx-edit-alt me-1"></i>Editar producto</a>
+                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>Eliminar producto</a>
               </div>
+            </div>
+          </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
 
-            {% endblock page_content %}
-            
+{% endblock page_content %}
