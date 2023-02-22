@@ -18,7 +18,7 @@
   <div class="mb-3">
     <div class="form-check">
       <input class="form-check-input" type="checkbox" id="remember-me" />
-      <label class="form-check-label" for="remember-me"> Recuérdame </label>
+      <label style="cursor:pointer;" class="form-check-label" for="remember-me"> Recuérdame </label>
     </div>
   </div>
   <div class="mb-3">
@@ -27,7 +27,7 @@
 </form>
 <p class="text-center">
   <a href="{%url 'password_reset'%}">
-    <span>¿Olvidó su contraseña?</span> <br><br>
+    <span>¿Olvidó su contraseña?</span><br><br>
   </a>
   <a href="{% url 'signup'%}"><span>Crea una cuenta</span></a>
 </p>

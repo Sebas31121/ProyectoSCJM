@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página principal</title>
+    <link rel="stylesheet" href="{% static 'css/demo.css' %}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -15,10 +16,30 @@
 <body>
     <!-- Content -->
     {% block page_content%}
-    <h1>VACIO</h1>
+    <div class="col-lg-8 mb-4 order-0">
+        <div class="card">
+            <div class="d-flex align-items-end row">
+                <div class="col-sm-7">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Bienvenido {{request.user.username}}🎉</h5>
+                        <p class="mb-4">
+                            Mensaje motivacional aprobado por cualquier persona que entre y pueda ver esto :v
+                        </p>
+
+                        <a href="javascript:;" class="btn btn-sm btn-outline-primary">Mostrar cualquier cosa</a>
+                    </div>
+                </div>
+                <div class="col-sm-5 text-center text-sm-left">
+                    <div class="card-body pb-0 px-0 px-md-4">
+                        <img src="{% static 'img/illustrations/man-with-laptop-light.png'%}" height="150rem"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     {% endblock page_content %}
-
-
 </body>
 
 </html>
