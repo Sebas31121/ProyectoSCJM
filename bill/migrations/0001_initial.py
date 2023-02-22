@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='FacturaBase',
+            name='BillBase',
             fields=[
                 ('commonmodel_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='shared.commonmodel')),
                 ('fecha', models.DateTimeField(auto_now_add=True)),
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             bases=('shared.commonmodel',),
         ),
         migrations.CreateModel(
-            name='FacturaDetalle',
+            name='BillDetalle',
             fields=[
                 ('commonmodel_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='shared.commonmodel')),
                 ('cantidad', models.BigIntegerField(default=0)),
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('sub_total', models.FloatField(default=0)),
                 ('descuento', models.FloatField(default=0)),
                 ('total', models.FloatField(default=0)),
-                ('factura', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='factura.facturabase')),
+                ('factura', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='bill.billbase')),
                 ('producto', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='inventory.product')),
             ],
             bases=('shared.commonmodel',),

@@ -3,11 +3,11 @@ from django import datetime
 from django.contrib import messages
 from inventory.models import Product
 from django.views.generic import ListView, CreateView, UpdateView
-from .models import FacturaBase, FacturaDetalle
+from .models import BillBase, BillDetalle
 from django.contrib.auth.decorators import login_required, permission_required
 
 class FacturaView(ListView):
-    model = FacturaBase
+    model = BillBase
     template_name = 'factura/factura_list.html'
     context_object_name = 'obj'
     permission_required = 'factura.view_factura'
@@ -18,7 +18,7 @@ def facturas(request, id=None):
     detalle = {}
     
     if request.method == "GET":
-        enc = FacturaBase.objects.filter(pk=id).first()
+        enc = BillBase.objects.filter(pk=id).first()
         if not enc:
             encabezado = {
                 'id': 0,
@@ -36,7 +36,7 @@ def facturas(request, id=None):
                 'descuento': enc.descuento,
                 'total': enc.total,
             }
-            detalle = FacturaDetalle.objects.filter(factura=enc)
+            detalle = BillDetalle.objects.filter(factura=enc)
 
         context = {"enc": encabezado, "det": detalle}
 
@@ -44,7 +44,7 @@ def facturas(request, id=None):
         fecha = request.POST.get("fecha")
         # si no hay id significa que la factura es nueva
         if not id:
-            enc = FacturaBase(
+            enc = BillBase(
                 fecha=fecha,
                 user=request.user
             )
@@ -52,7 +52,7 @@ def facturas(request, id=None):
                 enc.save()
                 id = enc.id
         else:
-            enc = FacturaBase.objects.filter(pk=id).first()
+            enc = BillBase.objects.filter(pk=id).first()
             if enc:
                 enc.user_modification = request.user.id
                 enc.save()
@@ -68,7 +68,7 @@ def facturas(request, id=None):
         total = request.POST.get('total_detalle')
 
         pro = Product.objects.get(codigo=codigo)
-        det = FacturaBase(
+        det = BillBase(
             factura=enc,
             producto=pro,
             cantidad=cantidad,

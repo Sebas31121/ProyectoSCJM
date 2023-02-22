@@ -2,15 +2,15 @@ from django.shortcuts import render
 from django.utils.dateparse import parse_date
 from datetime import timedelta
 
-from .models import FacturaDetalle, FacturaBase
+from .models import BillDetalle, BillBase
 
 
 
 def imprimir_factura_recibo(request, numero_factura):
     template_name = 'factura/factura_recibo.html'
 
-    encabezado = FacturaBase.objects.get(id=numero_factura)
-    detalle = FacturaDetalle.objects.filter(factura=numero_factura)
+    encabezado = BillBase.objects.get(id=numero_factura)
+    detalle = BillDetalle.objects.filter(factura=numero_factura)
 
     context = {
         'request': request,
@@ -27,7 +27,7 @@ def imprimir_factura_list(request,fecha_1,fecha_2):
     fecha_2=parse_date(fecha_2)
     fecha_2=fecha_2+timedelta(days=1)
 
-    enc = FacturaBase.objects.filter(fecha__gte =fecha_1,fecha__lt=fecha_2)
+    enc = BillBase.objects.filter(fecha__gte =fecha_1,fecha__lt=fecha_2)
     fecha_2 = fecha_2 - timedelta(days=1)
 
     context ={

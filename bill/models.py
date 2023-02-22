@@ -5,7 +5,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.db.models import Sum
 
-class FacturaBase(CommonModel):
+class BillBase(CommonModel):
     fecha = models.DateTimeField(auto_now_add=True)
     sub_total = models.FloatField(default=0)
     descuento = models.FloatField(default=0)
@@ -16,10 +16,10 @@ class FacturaBase(CommonModel):
 
     def save(self):
         self.total = self.sub_total - self.descuento
-        super(FacturaBase, self).save()
+        super(BillBase, self).save()
 
-class FacturaDetalle(CommonModel):
-    factura = models.ForeignKey(FacturaBase, on_delete=models.CASCADE)
+class BillDetalle(CommonModel):
+    factura = models.ForeignKey(BillBase, on_delete=models.CASCADE)
     producto = models.ForeignKey(Product, on_delete=models.CASCADE)
     cantidad = models.BigIntegerField(default=0)
     precio = models.FloatField(default=0)
@@ -33,21 +33,21 @@ class FacturaDetalle(CommonModel):
     def save(self):
         self.sub_total = float(float(int(self.cantidad)) * float(self.precio))
         self.total = self.sub_total - float(self.descuento)
-        super(FacturaDetalle, self).save()
+        super(BillDetalle, self).save()
 
-@receiver(post_save, sender=FacturaDetalle)
+@receiver(post_save, sender=BillDetalle)
 def detalle_fac_guardar(sender, instance, **kwargs):
     factura_id = instance.factura.id
     producto_id = instance.producto.id
 
-    enc = FacturaBase.objects.get(pk=factura_id)
+    enc = BillBase.objects.get(pk=factura_id)
     if enc:
-        sub_total = FacturaDetalle.objects \
+        sub_total = BillDetalle.objects \
             .filter(factura=factura_id) \
             .aggregate(sub_total=Sum('sub_total')) \
             .get('sub_total', 0.00)
 
-        descuento = FacturaDetalle.objects \
+        descuento = BillDetalle.objects \
             .filter(factura=factura_id) \
             .aggregate(descuento=Sum('descuento')) \
             .get('descuento', 0.00)

@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'registration',
     'bill',
     'order',
-    'chasbox',
+    'cashbox',
 ]
 
 MIDDLEWARE = [

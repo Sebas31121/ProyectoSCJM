@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CajaConfig(AppConfig):
+class CashboxConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'caja'
+    name = 'cashbox'
