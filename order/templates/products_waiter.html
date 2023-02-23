@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesero</title>
+    <style type="text/css">
+        #body {
+            text-align: center;
+            background-color: #3e5f8a;
+            width: 25%;
+            height: 100%;
+        }
+
+        #filtro {
+            width: 65%;
+            height: 1.5rem;
+            text-align: center;
+            border: none;
+
+        }
+
+        #button {
+            width: 50%;
+            height: 1.5rem;
+            color: white;
+            background-color: rgb(16, 16, 105);
+            border: none;
+            border-radius: 1rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        img {
+            width: 20rem;
+            height: 7rem;
+            cursor: pointer;
+        }
+
+        #pedido {
+            border-radius: 5rem;
+            height: 2rem;
+            width: 2rem;
+        }
+
+        #nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="body">
+        <div id="nav">
+            <h1>Nombre en Producción</h1>
+            <img src="https://teconline.center/COMANDA/img/LISTAS.png" id="pedido">
+        </div>
+        <h3>{{request.user.username}}</h3>
+        <a href="waiter.html"><button id="button">Mesa</button></a><br><br>
+        <button id="comandar">Comandar</button><br><br>
+        <select name="" id="filtro">
+            <option value="">Cervezas</option>
+            <option value="">Bebidas & Varios</option>
+            <option value="">Ron Viejo de Caldas</option>
+            <option value="">Ron Medellín</option>
+            <option value="">Aguardiente Antioqueño</option>
+            <option value="">Whisky</option>
+            <option value="">Tequila</option>
+            <option value="">Bailey's</option>
+            <option value="">Jagermeister</option>
+            <option value="">Vodka</option>
+            <option value="">Vinos</option>
+            <option value="">Cocteles y Shot's</option>
+            <option value="">Granizados</option>
+            <option value="">Licor por trago</option>
+        </select><br><br>
+
+    </div>
+</body>
+
+</html>
