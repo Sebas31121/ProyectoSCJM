@@ -1,3 +1,5 @@
+{% extends 'core/base/base_admin.html' %}
+{load static}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -55,7 +57,7 @@
         <div class="card">
             <div class="card-header">
                 <center>
-                    <h4>Sistema de Facturación SCASTRILLOE</h4>
+                    <h4>Sistema de Facturación Nombre en Produccion</h4>
                     <h3>Reporte de Facturas<br><small>Período: {{f1 | date:"d/m/Y"}} - {{f2 | date:"d/m/Y"}}</small></h3>
                 </center>
             </div>

@@ -1,3 +1,4 @@
+{% extends 'core/base/base_admin.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -22,7 +23,7 @@
 <body onload="window.print();window.close()" class="receipt">
     <div class="col-md-1 col-sm-1 col-xs-1 col-xl-1">
         <center>
-            <b class="text-center">Tienda SCASTRILLONE</b><br>
+            <b class="text-center">Tienda Nombre en Produccion</b><br>
             <small>Direccion</small><br>
             <small>FACTURA No. {{enc.factura}}</small><br>
         </center>
@@ -85,7 +86,7 @@
             <center>
                 Creada por:  {{enc.user}} - Fecha:  {{enc.creado | date}}
                 <br>
-                <i>&copy; &reg; <b>SCASTRILLONE</b><br> - santiagocastrillon.ep@gmail.com</i>
+                <i>&copy; &reg; <b>Nombre en Produccion</b><br> - x@gmail.com</i>
             </center>
         </small>
         </div>
