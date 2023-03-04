@@ -33,9 +33,7 @@
   z-index: auto;
 }
 
-/*
-* Content
-******************************************************************************/
+/*Content*/
 
 .demo-blocks > * {
   display: block !important;
@@ -80,9 +78,7 @@
   display: block !important;
 }
 
-/*
-* Layout demo
-******************************************************************************/
+/*Layout demo*/
 
 .layout-demo-wrapper {
   display: -webkit-box;
