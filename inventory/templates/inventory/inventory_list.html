@@ -30,8 +30,8 @@
                 <i class="bx bx-dots-vertical-rounded"></i>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'inventory_update_product' product.id %}"><i class="bx bx-edit-alt me-1"></i>Editar producto</a>
-                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>Eliminar producto</a>
+                <a class="dropdown-item" href="{% url 'inventory_update_product' product.id %}"><i class="bx bxs-edit"></i>Editar producto</a>
+                <a class="dropdown-item" href="{% url 'eliminar_producto' product.id %}"><i class='bx bx-trash-alt'></i>Eliminar producto</a>
               </div>
             </div>
           </td>

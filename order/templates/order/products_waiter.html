@@ -60,23 +60,13 @@
             <img src="https://teconline.center/COMANDA/img/LISTAS.png" id="pedido">
         </div>
         <h3>{{request.user.username}}</h3>
-        <a href="waiter.html"><button id="button">Mesa</button></a><br><br>
+        <a href="{% url 'order_new'%}"><button id="button">Mesa</button></a><br><br>
         <button id="comandar">Comandar</button><br><br>
         <select name="" id="filtro">
-            <option value="">Cervezas</option>
-            <option value="">Bebidas & Varios</option>
-            <option value="">Ron Viejo de Caldas</option>
-            <option value="">Ron Medellín</option>
-            <option value="">Aguardiente Antioqueño</option>
-            <option value="">Whisky</option>
-            <option value="">Tequila</option>
-            <option value="">Bailey's</option>
-            <option value="">Jagermeister</option>
-            <option value="">Vodka</option>
-            <option value="">Vinos</option>
-            <option value="">Cocteles y Shot's</option>
-            <option value="">Granizados</option>
-            <option value="">Licor por trago</option>
+            {% for product in all_products %}
+            <option value="">{{product.name}}</option>
+            <!-- <img src="{{product.img_route.url}}"> -->
+            {% endfor%}
         </select><br><br>
 
     </div>

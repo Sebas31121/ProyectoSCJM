@@ -1,5 +1,6 @@
 from django.urls import path
+from .views import cashbox
 
-urlpatterns =[
-
+urlpatterns = [
+    path( 'caja/', cashbox, name="cashbox"),
 ]

@@ -23,13 +23,9 @@
         <h3>{{request.user.username}}</h3>
         <label for="">MESA: </label>
         <input type="search" placeholder="MESA">
-        <select name="" id="filtro">
-            {% for product in all_products %}
-            <option value="">{{product.name}}</option>
-            <!-- <img src="{{product.img_route.url}}"> -->
-            {% endfor%}
-        </select>
-        <a href="products_waiter.html"><button>IR</button></a>
+
+        <a href="{% url 'products_waiter'%}"><button>IR</button></a><br><br>
+        <a href="{% url 'index' %}"><button>Volver</button></a>
     </div>
 </body>
 

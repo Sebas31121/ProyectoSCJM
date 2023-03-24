@@ -43,3 +43,6 @@ class ProductForm(forms.ModelForm):
         super(ProductForm, self).__init__(*arg, **kwargs)
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({"class": "form-control mt-1"})
+
+class DeleteForm(forms.Form):
+    confirmacion = forms.BooleanField(label='¿Está seguro de que desea eliminar este producto?', required=True)
