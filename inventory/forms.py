@@ -37,7 +37,7 @@ class UnityForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'stock', 'unity','category','subcategory']
+        fields = ['name', 'description', 'price', 'stock','img_route', 'unity','category','subcategory']
 
     def __init__(self, *arg, **kwargs) -> None:
         super(ProductForm, self).__init__(*arg, **kwargs)

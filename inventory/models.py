@@ -24,6 +24,7 @@ class Product(models.Model):
     description=models.CharField("Descripcion",max_length=200,help_text="Descripción del producto",blank=True,null=True)
     price=models.FloatField("Precio",default=0,help_text="Precio del producto")
     stock=models.IntegerField("Cantidad",default=0,help_text="En existencia")
+    img_route=models.ImageField(upload_to="product_images",default="/")
     unity=models.ForeignKey(Unity,on_delete=models.CASCADE,related_name="product_unity",blank=True,null=True,verbose_name="Unidad de medida")
     category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name="product_category",blank=True,null=True,verbose_name="Categoria")
     subcategory=models.ForeignKey(SubCategory,on_delete=models.CASCADE,related_name="product_subcategory",blank=True,null=True,verbose_name="Subcategoria")

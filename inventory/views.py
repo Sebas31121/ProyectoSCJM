@@ -58,7 +58,7 @@ def createProductView (request):
     if request.method=='GET':
         form_inventory=ProductForm()
     if request.method=='POST':
-        form_inventory=ProductForm(request.POST)
+        form_inventory=ProductForm(request.POST,request.FILES)
         if form_inventory.is_valid():
             form_inventory.save()
     return render(request,template_name,{'title':'SCJM-Crear Producto','title_form':"Crear Producto",'form':form_inventory})

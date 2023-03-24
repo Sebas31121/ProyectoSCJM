@@ -7,7 +7,7 @@
 
         </div>
         <div class="card-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                 <label class="form-label" for="basic-default-message">{{field.label}}</label>
