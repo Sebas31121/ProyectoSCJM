@@ -1,32 +1,44 @@
-{% extends 'core/base/base_admin.html' %}
-{%load static%}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesero</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style type="text/css">
-        #body{
+        #body {
             text-align: center;
             background-color: #3e5f8a;
-            width: 25%;
+            width: 100%;
             height: 100%;
+        }
+
+        input {
+            border: none;
+            outline: none;
+        }
+
+        button {
+            border: none;
+            outline: none;
         }
     </style>
 </head>
-{% block page_content %}
+
 <body>
     <div id="body">
-        <h1>Nombre en Producción</h1>
-        <h3>{{request.user.username}}</h3>
+        <h1>Nombre en Producción</h1><br>
+        <h3>{{request.user.email}}</h3><br>
         <label for="">MESA: </label>
         <input type="search" placeholder="MESA">
         <!--APARTADO PREVISUALIZACION DEL PEDIDO-->
         <a href="{% url 'products_waiter'%}"><button>IR</button></a><br><br>
-        <a href="{% url 'index' %}"><button>Volver</button></a>
+        <a href="{% url 'index' %}"><button>Volver</button></a><br><br>
+        <h3>:D</h3>
     </div>
 </body>
-{% endblock page_content %}
+
 </html>

@@ -2,7 +2,8 @@ from django.db import models
 from shared.models import CommonModel
 
 class Mesa(models.Model):
-    nro_mesa = models.IntegerField("Número de la mesa", help_text="Número de mesa")
+    nro_mesa = models.IntegerField("Número de la mesa", help_text="Mesa")
+    cant_sillas = models.IntegerField("Cantidad de sillas", help_text="Sillas")
 
 class Pedido(models.Model):
     id = models.BigIntegerField(primary_key=True)
