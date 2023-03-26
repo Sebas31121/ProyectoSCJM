@@ -1,0 +1,20 @@
+{% extends 'core/base/base_admin.html' %}
+{%load static%}
+{% block page_content %}
+<body>
+    <h3>{{request.user.username}}</h3>
+    {% for product in productos%}
+    <div class="col-6">
+        <div class="card" margin="5px" border-radius="5px">
+            <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">{{product.category}}</p>
+                <p class="card-text">{{product.price}}</p>
+                <a href="#" class="btn-primary">+</a>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+    <a href="{% url 'products_waiter' %}"><button>Volver</button></a>
+</body>
+{% endblock page_content %}

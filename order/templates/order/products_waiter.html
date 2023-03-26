@@ -1,3 +1,5 @@
+{% extends 'core/base/base_admin.html' %}
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,8 +43,8 @@
 
         #pedido {
             border-radius: 5rem;
-            height: 2rem;
-            width: 2rem;
+            height: 0.1rem;
+            width: 0.1rem;
         }
 
         #nav {
@@ -52,24 +54,24 @@
         }
     </style>
 </head>
-
+{% block page_content %}
 <body>
     <div id="body">
         <div id="nav">
+            <a href="{% url 'preview_order'%}"><button>Comandación</button></a>
             <h1>Nombre en Producción</h1>
-            <img src="https://teconline.center/COMANDA/img/LISTAS.png" id="pedido">
+            <!-- <img src="https://teconline.center/COMANDA/img/LISTAS.png" id="pedido"> -->
         </div>
         <h3>{{request.user.username}}</h3>
         <a href="{% url 'order_new'%}"><button id="button">Mesa</button></a><br><br>
-        <button id="comandar">Comandar</button><br><br>
+        <!-- <button id="comandar">Comandar</button><br><br> -->
         <select name="" id="filtro">
             {% for product in all_products %}
             <option value="">{{product.name}}</option>
             <!-- <img src="{{product.img_route.url}}"> -->
             {% endfor%}
         </select><br><br>
-
     </div>
 </body>
-
+{% endblock page_content %}
 </html>
