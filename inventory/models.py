@@ -15,7 +15,7 @@ class SubCategory(models.Model):
         return f"{self.name}"
 
 class Unity(models.Model):
-    name=models.CharField(max_length=80,help_text="Unidad de medida", unique=True)
+    name=models.CharField("Unidad de medida", max_length=80,help_text="Unidad de medida", unique=True)
     def __str__(self) -> str:
         return self.name
 

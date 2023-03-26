@@ -15,6 +15,7 @@ def createCategoryView (request):
         if form_inventory.is_valid():
             form_inventory.save()
             messages.success(request=request, message="Esta categoría se creó con éxito")
+            return HttpResponseRedirect('/inventory/list/product')
 
     return render(request,template_name,{'title':'SCJM-Crear Categoria','title_form':"Crear Categoria",'form':form_inventory})
 
@@ -26,7 +27,8 @@ def editCategoryView (request,pk):
     if categoryform.is_valid():
         categoryform.save()
         messages.success(request=request, message="Esta categoría se actualizó con éxito")
-        return HttpResponseRedirect('/inventory/new/category')
+        return HttpResponseRedirect('/inventory/list/product')
+
 
     return render(request,template_name,{'title':'SCJM-Actualizar Categoria','title_form':"Actualizar Categoria",'form':categoryform,"obj":category})
 
@@ -42,6 +44,7 @@ def createSubcategoryView (request):
         if form_inventory.is_valid():
             form_inventory.save()
             messages.success(request=request, message="Esta subcategoría se creó con éxito")
+            return HttpResponseRedirect('/inventory/list/product')
 
     return render(request,template_name,{'title':'SCJM-Crear Subcategoria','title_form':"Crear Subcategoria",'form':form_inventory})
 
@@ -53,7 +56,7 @@ def editSubcategoryView (request,pk):
     if subcategoryform.is_valid():
         subcategoryform.save()
         messages.success(request=request, message="Esta subcategoría se actualizó con éxito")
-        return HttpResponseRedirect('/inventory/new/subcategory')
+        return HttpResponseRedirect('/inventory/list/product')
 
     return render(request,template_name,{'title':'SCJM-Actualizar Subcategoria','title_form':"Actualizar Subcategoria",'form':subcategoryform})
     
@@ -68,6 +71,7 @@ def createProductView (request):
         if form_inventory.is_valid():
             form_inventory.save()
             messages.success(request=request, message="Este producto se creó con éxito")
+        return HttpResponseRedirect('/inventory/list/product')
     return render(request,template_name,{'title':'SCJM-Crear Producto','title_form':"Crear Producto",'form':form_inventory})
 
 class ListProductView(ListView):
@@ -84,7 +88,7 @@ def editProductView (request,pk):
     if productform.is_valid():
         productform.save()
         messages.success(request=request, message="Este producto se actualizó con éxito")
-        return HttpResponseRedirect('/inventory/new/product')
+        return HttpResponseRedirect('/inventory/list/product')
     return render(request,template_name,{'title':'SCJM-Actualizar Producto','title_form':"Actualizar Producto",'form':productform})
 
 @login_required(login_url='/account/login/')
@@ -98,6 +102,7 @@ def createUnityView (request):
         if form_inventory.is_valid():
             form_inventory.save()
             messages.success(request=request, message="Este unidad de medida se creó con éxito")
+            return HttpResponseRedirect('/inventory/list/product')
     return render(request,template_name,{'title':'SCJM-Crear Unidad de medida','title_form':"Crear unidad de medida",'form':form_inventory})
 
 @login_required(login_url='/account/login/')
@@ -106,4 +111,4 @@ def deleteProductView(request, pk):
     product.is_active=False
     product.save()
     messages.success(request=request, message="Este producto se eliminó con éxito")
-    return redirect('inventory_list')
+    return HttpResponseRedirect('/inventory/list/product')

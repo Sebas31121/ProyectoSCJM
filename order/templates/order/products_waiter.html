@@ -46,7 +46,7 @@
 
 <body>
     <div id="body">
-        <h1>Nombre en Producción</h1>
+        <h1>System SJD</h1>
         <p>{{request.user.email}}</p>
         <div id="nav">
             <img src="https://teconline.center/COMANDA/img/LISTAS.png" id="pedido">
@@ -62,7 +62,7 @@
                     <img class="card-img-bottom" src="{{product.img_route.url}}" style="width:5rem; height:5rem;">
                     <h5 class="card-title">{{product.name}}</h5>
                     <p class="card-text">{{product.description}}</p>
-                    <p class="card-text">{{product.price}}</p>
+                    <p class="card-text" style="color:#85bb65">${{product.price}}</p>
                     <i class='bx bx-minus' ></i>
                     '0'
                     <i class='bx bx-plus'></i>
