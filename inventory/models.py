@@ -8,12 +8,6 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class SubCategory(models.Model):
-    category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name="fkcategory")
-    name=models.CharField("Nombre de la categoria", max_length=80,help_text="Nombre de la Subcategoria", unique=True)
-    def __str__(self) -> str:
-        return f"{self.name}"
-
 class Unity(models.Model):
     name=models.CharField("Unidad de medida", max_length=80,help_text="Unidad de medida", unique=True)
     def __str__(self) -> str:
@@ -27,7 +21,6 @@ class Product(models.Model):
     img_route=models.ImageField("Subir imagen", upload_to="product_images",default="/")
     unity=models.ForeignKey(Unity,on_delete=models.CASCADE,related_name="product_unity",blank=True,null=True,verbose_name="Unidad de medida")
     category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name="product_category",blank=True,null=True,verbose_name="Categoria")
-    subcategory=models.ForeignKey(SubCategory,on_delete=models.CASCADE,related_name="product_subcategory",blank=True,null=True,verbose_name="Subcategoria")
     is_active=models.BooleanField(default=True)
     def __str__(self) -> str:
         return f"{self.name} - {self.description} - {self.price} - {self.stock}"

@@ -75,11 +75,6 @@
                   <div data-i18n="Without menu">Crear categoria</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="{% url 'inventory_subcategory' %}" class="menu-link">
-                  <div data-i18n="Without navbar">Crear subcategoria</div>
-                </a>
-              </li>
               <li class="menu-item ">
                 <a href="{% url 'inventory_unity' %}" class="menu-link">
                   <div data-i18n="Container">Crear unidad de medida</div>
@@ -296,7 +291,7 @@
         </div>
         <!-- Cierre -->
         <div class="modal-footer">
-          <a href="{% url 'profile' %}"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Actualizar
+          <a href="{% url 'update_profile' user.id %}"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Actualizar
               datos</button></a>
           <a href="{% url 'logout' %}"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar
               sesión</button></a>

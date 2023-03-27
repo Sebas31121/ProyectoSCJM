@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.views.generic import ListView
-from .forms import CategoryForm,SubCategoryForm,ProductForm,UnityForm,DeleteForm
-from .models import Category,SubCategory,Product,Unity
+from .forms import CategoryForm, ProductForm,UnityForm,DeleteForm
+from .models import Category, Product,Unity
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 @login_required(login_url='/accounts/login/')
@@ -29,36 +29,7 @@ def editCategoryView (request,pk):
         messages.success(request=request, message="Esta categoría se actualizó con éxito")
         return HttpResponseRedirect('/inventory/list/product')
 
-
     return render(request,template_name,{'title':'SCJM-Actualizar Categoria','title_form':"Actualizar Categoria",'form':categoryform,"obj":category})
-
-@login_required(login_url='/accounts/login/')
-def createSubcategoryView (request):
-    template_name='inventory/inventory_form.html'
-    form_inventory={}
-    if request.method=='GET':
-        form_inventory=SubCategoryForm()
-    if request.method=='POST':
-        name=request.POST.get("name")
-        form_inventory=SubCategoryForm(request.POST)
-        if form_inventory.is_valid():
-            form_inventory.save()
-            messages.success(request=request, message="Esta subcategoría se creó con éxito")
-            return HttpResponseRedirect('/inventory/list/product')
-
-    return render(request,template_name,{'title':'SCJM-Crear Subcategoria','title_form':"Crear Subcategoria",'form':form_inventory})
-
-@login_required(login_url='/account/login/')
-def editSubcategoryView (request,pk):
-    subcategory = get_object_or_404(SubCategory,id=pk)
-    subcategoryform = CategoryForm(request.POST or None,instance=subcategory)
-    template_name = 'inventory/inventory_form.html'
-    if subcategoryform.is_valid():
-        subcategoryform.save()
-        messages.success(request=request, message="Esta subcategoría se actualizó con éxito")
-        return HttpResponseRedirect('/inventory/list/product')
-
-    return render(request,template_name,{'title':'SCJM-Actualizar Subcategoria','title_form':"Actualizar Subcategoria",'form':subcategoryform})
     
 @login_required(login_url='/account/login/')
 def createProductView (request):
@@ -81,8 +52,8 @@ class ListProductView(ListView):
     queryset = Product.objects.filter(is_active=True)
 
 @login_required(login_url='/account/login/')
-def editProductView (request,pk):
-    product = get_object_or_404(Product,id=pk)
+def editProductView (request, pk):
+    product = get_object_or_404(Product, id=pk)
     productform = CategoryForm(request.POST or None,instance=product)
     template_name = 'inventory/inventory_form.html'
     if productform.is_valid():

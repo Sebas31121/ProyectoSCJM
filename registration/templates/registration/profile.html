@@ -1,3 +1,5 @@
+{% extends "registration/sign_base.html" %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,11 +11,33 @@
 </head>
 
 <body>
-    {%if request.user.is_authenticated%}
-    <h1>Hola {{request.user.username}}</h1>
-    {%endif%}
-    <a href="{% url 'logout' %}"><button>Cerrar sesión</button></a>
+    {%block content_form%}
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{title_form}}</h5>
+
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <label class="form-label" for="basic-default-message">{{field.label}}</label>
+                    <div class="input-group input-group-merge">
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
     <a href="{% url 'index' %}"><button>Volver</button></a>
+
+    {% endblock content_form%}
+
 </body>
 
 </html>

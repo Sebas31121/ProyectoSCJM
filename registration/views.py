@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from .form import UserRegistrationForm
 from django.contrib.auth.views import LogoutView 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -22,3 +24,14 @@ def profile(request):
 
 class SignOutView(LogoutView):
     pass
+
+@login_required(login_url='/account/login/')
+def editProfileView (request, pk):
+    user = get_object_or_404(User, id=pk)
+    userform = UserRegistrationForm(request.POST or None,instance=user)
+    template_name = 'registration/profile.html'
+    if userform.is_valid():
+        userform.save()
+        messages.success(request=request, message="Este usuario se actualizó con éxito")
+        return HttpResponseRedirect('/')
+    return render(request,template_name,{'title':'System SJD - Actualizar usuario','title_form':"Actualizar usuario",'form':userform})

@@ -61,5 +61,6 @@ def restar (request, producto_id):
 @login_required(login_url='/accounts/login/')
 def limpiar (request, producto_id):
     order = Order(request)
-    order.limpiar()
+    producto = Product.objects.get(id=producto_id)
+    order.limpiar(producto)
     return redirect("order:products_waiter")
