@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,14 +9,10 @@
     <title>Mesero</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@1,700&display=swap" rel="stylesheet">
     <style type="text/css">
-        #body {
-            text-align: center;
-            background-color: #3e5f8a;
-            width: 100%;
-            height: 100%;
-        }
-
         input {
             border: none;
             outline: none;
@@ -25,20 +22,37 @@
             border: none;
             outline: none;
         }
+
+        #imgs {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        body {
+            color: white;
+            font-family: 'Ubuntu', sans-serif;
+            background-color: black;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    <div id="body">
-        <h1>Nombre en Producción</h1><br>
-        <h3>{{request.user.email}}</h3><br>
-        <label for="">MESA: </label>
-        <input type="search" placeholder="MESA">
-        <!--APARTADO PREVISUALIZACION DEL PEDIDO-->
-        <a href="{% url 'products_waiter'%}"><button>IR</button></a><br><br>
-        <a href="{% url 'index' %}"><button>Volver</button></a><br><br>
-        <h3>:D</h3>
-    </div>
+    <h1>System SJD</h1><br>
+    <p>{{request.user.email}}</p><br>
+    <div id="imgs">
+        <img src="{% static 'img/avatars/dubai.jpg'%}" style="width: 20%;height: 20%; border-radius: 4rem;">
+        <img src="{% static 'img/avatars/mulata.jpg'%}" style="width: 25%;height: 25%; border-radius: 4rem;">
+    </div><br>
+    <label for="">MESA: </label><br>
+    <input type="search" placeholder="MESA">
+    <!--APARTADO PREVISUALIZACION DEL PEDIDO-->
+    <a href="{% url 'products_waiter'%}"><button>IR</button></a><br><br>
+    <a href="{% url 'index' %}"><button>Volver</button></a><br><br>
+    <h3>:D</h3>
 </body>
 
 </html>

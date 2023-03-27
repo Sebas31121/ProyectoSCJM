@@ -1,15 +1,10 @@
 {%load static%}
 <!DOCTYPE html>
 <!-- beautify ignore:start -->
-<html
-  lang="es"
-  class="light-style customizer-hide"
-  dir="ltr"
-  data-theme="theme-default"
-  data-template="vertical-menu-template-free"
->
-  <head>
-    <meta charset="utf-8" />
+<html lang="es" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
@@ -20,7 +15,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon/favicon.ico'%}" />
+      <link rel="icon" type="image/x-icon" href="{% static 'img/favicon/favicon.ico'%}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -62,11 +57,11 @@
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <span class="app-brand-text demo text-body fw-bolder">Nombre en producción</span>
+                <span class="app-brand-text demo text-body fw-bolder">System SJD</span>
               </div>
               <!-- /Logo -->
               <center>
-              <h4 class="mb-2">Bienvenido a NeP 👋</h4>
+              <h4 class="mb-2">Bienvenido a nuestro sistema 👋</h4>
               <p class="mb-4">Por favor ingrese su cuenta</p>
               </center>
                 {% block content_form%}
@@ -86,5 +81,12 @@
     <!-- endbuild -->
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+{% if messages %}
+  {% for message in messages %}
+    <script>
+      alert("{{message}}")
+    </script>
+  {%endfor%}
+{%endif%}
   </body>
 </html>
