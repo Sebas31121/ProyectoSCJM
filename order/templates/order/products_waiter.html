@@ -60,6 +60,7 @@
         <br>
         <a href="{% url 'order_new'%}"><button id="devolverse"></button></a><br><br>
         <button id="comandar">Comandar</button>
+        <p id="orderTotal">0</p>
         <br><br>
         {% for product in all_products %}
         <div class="col-12">
@@ -71,7 +72,7 @@
                     <p class="card-text" style="color:#85bb65">${{product.price}}</p>
                     <i class='bx bx-minus' style="color:black"></i>
                     '0'
-                    <i class='bx bx-plus' style="color:black"></i>
+                    <i class='bx bx-plus' style="color:black" onclick="addToCar({{product.id}},{{product.price}})"></i>
                 </div>
             </div>
         </div><br>
@@ -85,5 +86,47 @@
         console.log(table_number);
         document.getElementById("devolverse").innerText="Mesa " + table_number;
     });
+    class Product {
+        constructor(itemId, price){
+            this.itemId=itemId;
+            this.price=price;
+        }
+    }
+    class ShoppingCar{
+        constructor(){
+            this.products=[];
+            this.total=0;
+        }
+        addProduct(Product){
+            this.products.push(Product);
+            this.total+=Product.price;
+            this.updateOrderTotal();
+        }
+        updateOrderTotal(){
+            let shoppingTotal = document.getElementById("orderTotal");
+            this.products.forEach((product)=>{
+                console.log(product.itemId);
+            });
+            shoppingTotal.innerText=this.total;
+        }
+        sendDataOrder(){
+            console.log(JSON.stringify(this.products))
+            fetch("{% url 'products_waiter'%}",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:  JSON.stringify({'products': this.products}),
+            }).then(response=>response.json()).then(data=>console.log(data))
+        }
+    }
+    let car = new ShoppingCar();
+    let addToCar =( itemId,price)=>{
+        let product = new Product(itemId=itemId,price=price);
+        car.addProduct(product);
+    }
+    let btnSendData = document.getElementById("comandar");
+    btnSendData.addEventListener("click",e=>{
+        e.preventDefault()
+        car.sendDataOrder();
+    })
 </script>
 </html>

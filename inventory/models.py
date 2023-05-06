@@ -24,4 +24,3 @@ class Product(models.Model):
     is_active=models.BooleanField(default=True)
     def __str__(self) -> str:
         return f"{self.name} - {self.description} - {self.price} - {self.stock}"
-
