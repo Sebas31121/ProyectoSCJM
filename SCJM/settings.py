@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'bill',
     'order',
     'cashbox',
+    'table',
 ]
 
 MIDDLEWARE = [

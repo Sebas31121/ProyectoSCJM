@@ -87,6 +87,25 @@
               </li>
             </ul>
           </li>
+          <!-- table -->
+          <li class="menu-item"> <!--class: "active open" Permanece este menu desplegable activo-->
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div data-i18n="Layouts">Mesa</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="{% url 'mesa_list' %}" class="menu-link">
+                  <div data-i18n="Without menu">Visualizar Mesas</div>
+                </a>
+              </li>
+              <li class="menu-item ">
+                <a href="{% url 'table_mesa' %}" class="menu-link">
+                  <div data-i18n="Container">Crear Mesa</div>
+                </a>
+              </li>
+            </ul>
+          </li>
           <!--<li class="menu-header small text-uppercase">
               <span class="menu-header-text">Pages</span>
             </li>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -87,7 +86,8 @@
         document.getElementById("devolverse").innerText="Mesa " + table_number;
     });
     class Product {
-        constructor(itemId, price){
+        constructor(itemId, price,name){
+            this.name=name;
             this.itemId=itemId;
             this.price=price;
         }
@@ -115,11 +115,27 @@
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 body:  JSON.stringify({'products': this.products}),
-            }).then(response=>response.json()).then(data=>console.log(data))
+            }).then(response=>response.json())//.then(data=>console.log(data))
         }
     }
+    /*function sendData(){
+        const form = document.getElementById('orderTotal');
+        const formData = new FormData(form);
+        fetch("{% url 'products_waiter'%}",{
+            method= 'POST',
+            body:formData
+        }).then(response => {
+            if (response.ok){
+                console.log('data save');
+            }else{
+                console.log('no se guardo');
+            }
+        }).catch(error => {
+            console.error('error saving data',error);
+        });
+    }*/
     let car = new ShoppingCar();
-    let addToCar =( itemId,price)=>{
+    let addToCar =(itemId,price)=>{
         let product = new Product(itemId=itemId,price=price);
         car.addProduct(product);
     }

@@ -1,0 +1,40 @@
+{% extends 'core/base/base_admin.html' %}
+{% load static %}
+<!-- Content -->
+{% block page_content%}
+<div class="card">
+  <center>
+    <h3 class="card-header">MESA</h3>
+  </center>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th>Numero Mesa</th>
+          <th>Cantidad de sillas</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        {% for mesa in mesas %}
+        <tr>
+          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{mesa.nro_mesa}}</strong></td>
+          <td>{{mesa.cant_sillas}}</td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'table_update_mesa' mesa.id %}"><i class="bx bxs-edit"></i>Editar Mesa</a>
+                <a class="dropdown-item" href="{% url 'eliminar_mesa' mesa.id %}"><i class='bx bx-trash-alt'></i>Eliminar Mesa</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock page_content %}
