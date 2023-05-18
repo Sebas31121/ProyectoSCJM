@@ -10,12 +10,13 @@
     <table class="table table-dark">
       <thead>
         <tr>
-          <th>Numero Mesa</th>
+          <th>Numero mesa</th>
           <th>Cantidad de sillas</th>
+          <th>Ajustes</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        {% for mesa in mesas %}
+        {% for mesa in mesa %}
         <tr>
           <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{mesa.nro_mesa}}</strong></td>
           <td>{{mesa.cant_sillas}}</td>
@@ -25,8 +26,8 @@
                 <i class="bx bx-dots-vertical-rounded"></i>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'table_update_mesa' mesa.id %}"><i class="bx bxs-edit"></i>Editar Mesa</a>
-                <a class="dropdown-item" href="{% url 'eliminar_mesa' mesa.id %}"><i class='bx bx-trash-alt'></i>Eliminar Mesa</a>
+                <a class="dropdown-item" href="{% url 'update_table' mesa.id %}"><i class="bx bxs-edit"></i>Editar Mesa</a>
+                <a class="dropdown-item" href="{% url 'delete_table' mesa.id %}"><i class='bx bx-trash-alt'></i>Eliminar Mesa</a>
               </div>
             </div>
           </td>

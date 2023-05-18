@@ -17,7 +17,7 @@ def createMesaView (request):
         if form_mesa.is_valid():
             form_mesa.save()
             messages.success(request=request, message="Mesa creada con éxito")
-        return HttpResponseRedirect('/table/list/mesa')
+        return HttpResponseRedirect('/table/list')
     return render(request,template_name,{'title':'SCJM-Crear Mesa','title_form':"Crear Mesa",'form':form_mesa})
 
 @login_required(login_url='/account/login/')
