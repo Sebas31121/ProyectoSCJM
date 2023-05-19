@@ -1,0 +1,49 @@
+{% extends 'core/base/base_admin.html' %}
+{% load static %}
+<!-- Content -->
+{% block page_content%}
+<div class="card">
+    <center>
+        <h3 class="card-header">MESA</h3>
+    </center>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>Apodo</th>
+                    <th>Celular</th>
+                    <th>Deuda</th>
+                    <th>Abono</th>
+                    <th>Estado</th>
+                    <th>Ajustes</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                {% for Cliente in clientes %}
+                <tr>
+                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{Cliente.nickname}}</strong></td>
+                    <td>{{Cliente.celular}}</td>
+                    <td>{{Cliente.deuda}}</td>
+                    <td>{{Cliente.abono}}</td>
+                    <td>{{Cliente.estado}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'update_customer' Cliente.id %}"><i
+                                        class="bx bxs-edit"></i>Editar cliente</a>
+                                <a class="dropdown-item" href="{% url 'update_customer' Cliente.id %}"><i
+                                        class='bx bx-trash-alt'></i>Eliminar cliente</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock page_content %}

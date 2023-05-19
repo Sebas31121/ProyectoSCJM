@@ -28,7 +28,7 @@ def editMesaView (request, pk):
     if mesaform.is_valid():
         mesaform.save()
         messages.success(request=request, message="La mesa se actualizó con exito")
-        return HttpResponseRedirect('/table/list/mesa')
+        return HttpResponseRedirect('/table/list')
     return render(request,template_name,{'title':'SCJM-Actualizar Mesa','title_form':"Actualizar Mesa",'form':mesaform})
 
 @login_required(login_url='/account/login/')
@@ -37,7 +37,7 @@ def deleteMesaView(request, pk):
     mesa.is_active=False
     mesa.save()
     messages.success(request=request, message="La mesa se eliminó con éxito")
-    return HttpResponseRedirect('/table/list/mesa')
+    return HttpResponseRedirect('/table/list')
 
 class ListMesaView(ListView):
     template_name = "table/table_list.html"

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'order',
     'cashbox',
     'table',
+    'customer',
 ]
 
 MIDDLEWARE = [
