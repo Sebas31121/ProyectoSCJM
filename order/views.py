@@ -31,15 +31,15 @@ def OrderView(request):
         data_order = request.POST.get("products")
         mesa, creado = Mesa.objects.get_or_create(nro_mesa=4,cant_sillas=4)
         if creado:
-            print("Se creó una nueva mesa con nro_mesa: ", mesa.nro_mesa)
+            print("Se creó una nueva mesa con el número de mesa: ", mesa.nro_mesa)
         else:
-            print("Se encontró una mesa existente con nro_mesa: ", mesa.nro_mesa)
+            print("Se encontró una mesa existente con el número de mesa: ", mesa.nro_mesa)
         order=Pedido.objects.create(nro_mesa=mesa)
-        return JsonResponse({"success":True})
-        """for productId in data_order:
+        for productId in data_order:
+            print(productId, data_order)
             product=Product.objects.get(id=productId)
-            order.productos.add(product)
-            return JsonResponse({"success":True})"""
+            order.products.add(product)
+        return JsonResponse({"success":True})
     return render(request,template_name,{'title':'SCJM-Guardar Pedido','all_products':active_products})
 
 @login_required(login_url='/accounts/login/')

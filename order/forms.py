@@ -22,4 +22,4 @@ class PedidoForm(forms.ModelForm):
         for field in iter(self.fields):
             if field=="nro_mesa":
                 self.fields[field].widget.attrs.update({'class': 'form-control','display':'none'})
-            self.fields[field].widget.attrs.update({'class': 'form-control'})    
+            self.fields[field].widget.attrs.update({'class': 'form-control'})       
