@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
-
 class Cliente(models.Model):
     nickname = models.CharField("Apodo", max_length=80, help_text="Apodo")
     celular = models.CharField("Número de contacto", max_length=80, help_text="Apodo")
