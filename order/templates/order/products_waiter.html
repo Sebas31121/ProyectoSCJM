@@ -58,9 +58,8 @@
         </div>
         <br>
         <a href="{% url 'order_new'%}"><button id="devolverse"></button></a><br><br>
-        <button id="comandar">Comandar</button>
+        <button type="submit" id="comandar">Comandar</button>
         <p id="orderTotal">0</p>
-        <br><br>
         {% for product in all_products %}
         <div class="col-12">
             <div class="card" style="border-radius: 5rem;">
@@ -75,7 +74,7 @@
                 </div>
             </div>
         </div><br>
-        {% endfor%}
+        {%endfor%}
         <br><br>
     </div>
 </body>
@@ -111,29 +110,13 @@
         }
         sendDataOrder(){
             console.log(JSON.stringify(this.products))
-            fetch("{% url 'products_waiter'%}",{
+            fetch("{% url 'products_waiter' %}",{
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
-                body:  JSON.stringify({'products': this.products}),
-            }).then(response=>response.json())//.then(data=>console.log(data))
+                body: JSON.stringify({'products': this.products}),
+            }).then(response=>response.json()).then(data=>console.log(data))
         }
     }
-    /*function sendData(){
-        const form = document.getElementById('orderTotal');
-        const formData = new FormData(form);
-        fetch("{% url 'products_waiter'%}",{
-            method= 'POST',
-            body:formData
-        }).then(response => {
-            if (response.ok){
-                console.log('data save');
-            }else{
-                console.log('no se guardo');
-            }
-        }).catch(error => {
-            console.error('error saving data',error);
-        });
-    }*/
     let car = new ShoppingCar();
     let addToCar =(itemId,price)=>{
         let product = new Product(itemId=itemId,price=price);
