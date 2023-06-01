@@ -1,9 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.views.generic import ListView
-from .forms import CategoryForm, ProductForm,UnityForm,DeleteForm
+from .forms import CategoryForm, ProductForm, UnityForm,DeleteForm
 from .models import Category, Product,Unity
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 @login_required(login_url='/accounts/login/')
 def createCategoryView (request):
     template_name='inventory/inventory_form.html'

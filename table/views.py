@@ -42,5 +42,5 @@ def deleteMesaView(request, pk):
 class ListMesaView(ListView):
     template_name = "table/table_list.html"
     model = Mesa
-    context_object_name = "mesa"
+    context_object_name = "mesas"
     queryset = Mesa.objects.filter(is_active=True)

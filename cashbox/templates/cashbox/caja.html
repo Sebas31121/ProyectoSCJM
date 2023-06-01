@@ -20,6 +20,7 @@
     </center>
     <section style="display:flex;flex-direction: column;">
         <section style="display:flex;justify-content:space-around;">
+<<<<<<< HEAD
             {% for table in tables%}
                 <div class="card" style="width:10rem;border-radius: 3rem;">
                     <div class="card-body">
@@ -84,6 +85,20 @@
         </section> -->
   
   
+=======
+            {%for table in tables%}
+            <div class="card" style="width:10rem;border-radius: 3rem;">
+                <div class="card-body">
+                    <center>
+                        <h4 class="card-title">Mesa #{{table.nro_mesa}}</h4>
+                        <p class="card-text" style="color:#85bb65">$$$</p>
+                        <a href="#" class="btn btn-primary">Ver pedido</a>
+                    </center>
+                </div>
+            </div>
+            {%endfor%}
+        </section>
+>>>>>>> refs/remotes/origin/main
     </section>
     {% endblock page_content %}
 
