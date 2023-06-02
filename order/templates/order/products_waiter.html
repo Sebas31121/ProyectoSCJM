@@ -57,7 +57,7 @@
             <i class='bx bx-copy-alt' style="font-size: 4rem; cursor: pointer;"></i>
         </div>
         <br>
-        <a href="{% url 'order_new'%}"><button id="devolverse"></button></a><br><br>
+        <a href="{% url 'order_save'%}"><button id="devolverse"></button></a><br><br>
         <button type="submit" id="comandar">Comandar</button>
         <p id="orderTotal">0</p>
         {% for product in all_products %}
@@ -79,15 +79,15 @@
     </div>
 </body>
 <script>
+    const table_number = localStorage.getItem("table_number");
     window.addEventListener("load", (e)=>{
-        const table_number = localStorage.getItem("table_number");
         console.log(table_number);
         document.getElementById("devolverse").innerText="Mesa " + table_number;
     });
     class Product {
         constructor(itemId, price,name){
             this.name=name;
-            this.itemId=itemId;
+            this.Id=itemId;
             this.price=price;
         }
     }
@@ -104,17 +104,18 @@
         updateOrderTotal(){
             let shoppingTotal = document.getElementById("orderTotal");
             this.products.forEach((product)=>{
-                console.log(product.itemId);
+                console.log(product.Id);
             });
             shoppingTotal.innerText=this.total;
         }
-        sendDataOrder(){
-            console.log(JSON.stringify(this.products))
-            fetch("{% url 'products_waiter' %}",{
+        async sendDataOrder(){
+            console.log(JSON.stringify(this.products));
+            fetch("{% url 'order_save' %}",{
                 method:"POST",
-                headers:{"Content-Type":"application/json"},
-                body: JSON.stringify({'products': this.products}),
-            }).then(response=>response.json()).then(data=>console.log(data))
+                headers: {"Content-Type": "application/json"},
+                body: await JSON.stringify({'table_number': table_number,'products': this.products}),
+            }).then(response => response.json()).then(data => console.log(data))
+
         }
     }
     let car = new ShoppingCar();

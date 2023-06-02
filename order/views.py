@@ -1,78 +1,95 @@
-from django.shortcuts import render,redirect
+import json
+from pydantic import BaseModel
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
 from order.forms import PedidoForm
 from inventory.models import Product
 from .models import Pedido
 from table.models import Mesa
 from order.order import Order
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='/accounts/login/')
-def saveOrderView(request):
-    template_name='order/waiter.html'
-    form_pedido={}
-    active_products=Product.objects.filter(is_active=True)
-    if request.method=='GET':
-        form_pedido=PedidoForm()
-    if request.method=='POST':
-        form_pedido=PedidoForm(request.POST)
-        if form_pedido.is_valid():
-            form_pedido.save()
-    return render(request,template_name,{'title':'SCJM-Guardar Pedido','title_form':"Guardar Pedido",'form':form_pedido,'all_products':active_products})
+def OrderView(request):
+    template_name = 'order/products_waiter.html'
+    active_products = Product.objects.filter(is_active=True)
+    context = {
+        'title': 'SCJM-Guardar Pedido',
+        'all_products': active_products
+    }
 
+    return render(request, template_name, context)
+
+
+class DataOrder(BaseModel):
+    id: int
+    price: float
+    table_number:int
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
-def OrderView(request):
-    template_name='order/products_waiter.html'
-    active_products=Product.objects.filter(is_active=True)
-    if request.method=='POST':
-        print("ACAAAAA", request.POST)
-        data_order = request.POST.getlist("products[]")
-        mesa, creado = Mesa.objects.get_or_create(nro_mesa=4,cant_sillas=4)
-        if creado:
-            print("Se creó una nueva mesa con el número de mesa: ", mesa.nro_mesa)
-        else:
-            print("Se encontró una mesa existente con el número de mesa: ", mesa.nro_mesa)
-        order=Pedido.objects.create(nro_mesa=mesa)
-        for productId in data_order:
-            print(productId, data_order)
-            product=Product.objects.get(id=productId)
-            order.products.add(product)
-        print(request.POST)    
-        return JsonResponse({"success":True})
-    return render(request,template_name,{'title':'SCJM-Guardar Pedido','all_products':active_products})
+@require_http_methods(["POST"])
+def OrderSaveView(request):
+    
+    data = json.loads(request.body.decode("utf-8"))
+    data_products = data.get("products")[0]
+    data_table = data.get("table_number")
+    data_order = DataOrder(id = data_products["Id"],price = data_products["price"],table_number = int(data_table))
+    print(data_order)
+    mesa = Mesa.objects.get(nro_mesa=int(data_table))
+
+    if isinstance(data_order,DataOrder):
+        order = Pedido.objects.create(nro_mesa=mesa)
+        #products = Product.objects.filter(id__in=data_order.id)
+        products = Product.objects.filter(id=data_order.id)
+        order.productos.set(products)
+
+        # Verificación
+        try:
+            order_verify = Pedido.objects.get(id=order.id)
+            success = order_verify is not None
+            print("La orden fue guardada correctamente: ", success)
+        except Pedido.DoesNotExist:
+            success = False
+            print("La orden no se guardó correctamente.")
+    else:
+        success = False
+
+    return JsonResponse({"success": success})
+
+        
 
 @login_required(login_url='/accounts/login/')
 def preView(request):
     template_name='order/preview.html'
     producto= Product.objects.all()
-    return render(request,template_name, {'productos':producto})
+    return render(request, template_name, {'productos': producto})
 
-@login_required(login_url='/accounts/login/')
-def agregar_producto(request,producto_id):
+
+def order_process(request, producto_id, method):
     order = Order(request)
     producto = Product.objects.get(id=producto_id)
-    order.agregar(producto)
+    getattr(order, method)(producto)
     return redirect("order:products_waiter")
 
-@login_required(login_url='/accounts/login/')
-def eliminar_producto (request, producto_id):
-    order = Order(request)
-    producto = Product.objects.get(id=producto_id)
-    order.eliminar_order(producto)
-    return redirect("order:products_waiter")
 
 @login_required(login_url='/accounts/login/')
-def restar (request, producto_id):
-    order = Order(request)
-    producto = Product.objects.get(id=producto_id)
-    order.restar(producto)
-    return redirect("order:products_waiter")
+def agregar_producto(request, producto_id):
+    return order_process(request, producto_id, 'agregar')
+
 
 @login_required(login_url='/accounts/login/')
-def limpiar (request, producto_id):
-    order = Order(request)
-    producto = Product.objects.get(id=producto_id)
-    order.limpiar(producto)
-    return redirect("order:products_waiter")
+def eliminar_producto(request, producto_id):
+    return order_process(request, producto_id, 'eliminar_order')
+
+
+@login_required(login_url='/accounts/login/')
+def restar_producto(request, producto_id):
+    return order_process(request, producto_id, 'restar')
+
+
+@login_required(login_url='/accounts/login/')
+def limpiar_producto(request, producto_id):
+    return order_process(request, producto_id, 'limpiar')
