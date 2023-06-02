@@ -20,7 +20,7 @@ class UnityForm(forms.ModelForm):
     def __init__(self, *arg, **kwargs) -> None:
         super(UnityForm, self).__init__(*arg, **kwargs)
         for field in iter(self.fields):
-            self.fields[field].widget.attrs.update({"class": "form-control mt-1"})
+            self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
 
 
 class ProductForm(forms.ModelForm):
@@ -31,7 +31,11 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *arg, **kwargs) -> None:
         super(ProductForm, self).__init__(*arg, **kwargs)
         for field in iter(self.fields):
-            self.fields[field].widget.attrs.update({"class": "form-control mt-1"})
+            self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
+            if field=="unity":
+                self.fields[field].widget.attrs.update({'class': 'form-control','readonly': True})  
+            if field=="category":
+                self.fields[field].widget.attrs.update({'class': 'form-control','readonly': True})   
 
 class DeleteForm(forms.Form):
     confirmacion = forms.BooleanField(label='¿Está seguro de que desea eliminar este producto?', required=True)

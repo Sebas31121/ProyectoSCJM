@@ -7,6 +7,6 @@ from .models import Table
 @login_required(login_url='/accounts/login/')
 def cashbox(request):
     context = []
-    tables = Mesa.objects.all()
+    tables = Mesa.objects.all().order_by('nro_mesa')
     #get total price per table
     return render(request,'cashbox/caja.html',{'tables':tables})

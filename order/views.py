@@ -34,36 +34,32 @@ class DataOrder(BaseModel):
 def OrderSaveView(request):
     
     data = json.loads(request.body.decode("utf-8"))
-    data_products = data.get("products")[0]
+    data_products = data.get("products")
     data_table = data.get("table_number")
-    data_order = DataOrder(id = data_products["Id"],price = data_products["price"],table_number = int(data_table))
-    print(data_order)
     mesa = Mesa.objects.get(nro_mesa=int(data_table))
 
-    if isinstance(data_order,DataOrder):
-        order = Pedido.objects.create(nro_mesa=mesa)
-        #products = Product.objects.filter(id__in=data_order.id)
+    order = Pedido.objects.create(nro_mesa=mesa)
+    for product in data_products:
+        data_order = DataOrder(id = product["Id"],price = product["price"],table_number = int(data_table))
         products = Product.objects.filter(id=data_order.id)
         order.productos.set(products)
+        print(data_order)
 
-        # Verificación
-        try:
-            order_verify = Pedido.objects.get(id=order.id)
-            success = order_verify is not None
-            print("La orden fue guardada correctamente: ", success)
-        except Pedido.DoesNotExist:
-            success = False
-            print("La orden no se guardó correctamente.")
-    else:
+    # Verificación
+    try:
+        order_verify = Pedido.objects.get(id=order.id)
+        success = order_verify is not None
+        print("La orden fue guardada correctamente: ", success)
+    except Pedido.DoesNotExist:
         success = False
-
+        print("La orden no se guardó correctamente.")
     return JsonResponse({"success": success})
 
         
 
 @login_required(login_url='/accounts/login/')
 def preView(request):
-    template_name='order/preview.html'
+    template_name='order/waiter.html'
     producto= Product.objects.all()
     return render(request, template_name, {'productos': producto})
 
