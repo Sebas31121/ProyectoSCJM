@@ -55,7 +55,7 @@ class ListProductView(ListView):
 @login_required(login_url='/account/login/')
 def editProductView (request, pk):
     product = get_object_or_404(Product, id=pk)
-    productform = CategoryForm(request.POST or None,instance=product)
+    productform = ProductForm(request.POST or None,instance=product)
     template_name = 'inventory/inventory_form.html'
     if productform.is_valid():
         productform.save()

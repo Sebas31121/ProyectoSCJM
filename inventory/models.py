@@ -1,9 +1,7 @@
 from django.db import models
 from shared.models import CommonModel
-# Create your models here.
-#Creacion Tablas
+
 class Category(models.Model):
-    #Creacion de Atributos
     name=models.CharField("Nombre de la categoria", max_length=80,help_text="Nombre de la Categoria", unique=True)
     def __str__(self) -> str:
         return self.name
