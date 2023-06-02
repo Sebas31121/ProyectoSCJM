@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.min.css " rel="stylesheet">
     <style type="text/css">
         #body {
             text-align: center;
@@ -78,7 +79,17 @@
         <br><br>
     </div>
 </body>
+<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js "></script>
 <script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
+    
     const table_number = localStorage.getItem("table_number");
     window.addEventListener("load", (e)=>{
         console.log(table_number);
@@ -114,7 +125,12 @@
                 method:"POST",
                 headers: {"Content-Type": "application/json"},
                 body: await JSON.stringify({'table_number': table_number,'products': this.products}),
-            }).then(response => response.json()).then(data => console.log(data))
+            }).then(response => response.json()).then(data => {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Pedido creado con exito'
+                })
+            })
 
         }
     }
