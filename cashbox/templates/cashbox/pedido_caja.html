@@ -1,4 +1,14 @@
 {% extends 'core/base/base_admin.html' %}
 {% block page_content%}
-<h1>ME QUIERO MORIR</h1>
+
+<h1>Detalle del pedido</h1>
+<h2>Estado : {{order.estado}} </h2>
+<h3>Productos:</h3>
+<ul>
+    {% for producto in order.productos.all %}
+        <li>{{ producto.name }}</li>
+    {% endfor %}
+</ul>
+
+
 {% endblock page_content %}

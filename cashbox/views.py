@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from table.models import Mesa
+import pprint
 from django.contrib.auth.decorators import login_required
 from order.models import Pedido
 from table.models import Mesa
@@ -13,7 +14,8 @@ def cashbox(request):
 
 @login_required(login_url='/accounts/login/')
 def viewOrderCashbox(request,pk):
-    pedido_actual= Pedido.objects.filter(nro_mesa=pk)
-    if pedido_actual.estado=="Pendiente":
-        nada=1
-    return render(request,'cashbox/pedido_caja.html')
+    context = {}
+    pedido_actual= Pedido.objects.get(id=pk)
+    
+    context['order'] = pedido_actual
+    return render(request,'cashbox/pedido_caja.html',context)

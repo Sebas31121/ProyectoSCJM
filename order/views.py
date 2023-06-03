@@ -43,13 +43,15 @@ def OrderSaveView(request):
         data_order = DataOrder(id = product["Id"],price = product["price"],table_number = int(data_table))
         products = Product.objects.filter(id=data_order.id)
         order.productos.set(products)
-        print(data_order)
+        order.estado = 1
+    order.save()
+    
 
     # Verificación
     try:
         order_verify = Pedido.objects.get(id=order.id)
         success = order_verify is not None
-        print("La orden fue guardada correctamente: ", success)
+        print(f"La orden {order.id} fue guardada correctamente: ", success)
     except Pedido.DoesNotExist:
         success = False
         print("La orden no se guardó correctamente.")
