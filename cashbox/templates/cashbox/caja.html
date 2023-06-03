@@ -25,7 +25,7 @@
                 <center>
                     <h4 class="card-title">Mesa #{{table.nro_mesa}}</h4>
                     <p class="card-text" style="color:#85bb65">$$$</p>
-                    <a href="#" class="btn btn-primary">Ver pedido</a>
+                    <a href="{% url 'view_order' pedido.id %}" class="btn btn-primary">Ver pedido</a>
                 </center>
             </div>
         </div>
