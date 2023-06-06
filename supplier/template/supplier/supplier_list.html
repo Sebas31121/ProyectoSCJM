@@ -1,0 +1,46 @@
+{% extends 'core/base/base_admin.html' %}
+{% load static %}
+<!-- Content -->
+{% block page_content%}
+<div class="card">
+    <center>
+        <h3 class="card-header">PROVEEDOR</h3>
+    </center>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>NIT</th>
+                    <th>Nombre</th>
+                    <th>Contacto</th>
+                    <th>Ubicación</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                {% for Proveedor in proveedors %}
+                <tr>
+                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{Proveedor.nit}}</strong></td>
+                    <td>{{Proveedor.nombre}}</td>
+                    <td>{{Proveedor.contacto}}</td>
+                    <td>{{Proveedor.ubicacion}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'update_supplier' Proveedor.id %}"><i
+                                        class="bx bxs-edit"></i>Editar Proveedor</a>
+                                <a class="dropdown-item" href="{% url 'delete_supplier' Proveedor.id %}"><i
+                                        class='bx bx-trash-alt'></i>Eliminar Mesa</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock page_content %}

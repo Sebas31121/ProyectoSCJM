@@ -28,5 +28,6 @@ urlpatterns = [
     path('',include('cashbox.urls')),
     path('',include('table.urls')),
     path('',include('customer.urls')),
+    path('',include('supplier.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

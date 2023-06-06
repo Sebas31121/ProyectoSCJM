@@ -37,7 +37,7 @@ def deleteCustomerView(request, pk):
     cliente.is_active=False
     cliente.save()
     messages.success(request=request, message="El cliente se eliminó con éxito")
-    return HttpResponseRedirect('/customer/list/')
+    return HttpResponseRedirect('/customer/list')
 
 class listCustomerView(ListView):
     template_name = "customer/customer_list.html"

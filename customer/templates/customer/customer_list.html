@@ -4,7 +4,7 @@
 {% block page_content%}
 <div class="card">
     <center>
-        <h3 class="card-header">MESA</h3>
+        <h3 class="card-header">CLIENTE</h3>
     </center>
     <div class="table-responsive text-nowrap">
         <table class="table table-dark">
@@ -34,7 +34,7 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{% url 'update_customer' Cliente.id %}"><i
                                         class="bx bxs-edit"></i>Editar cliente</a>
-                                <a class="dropdown-item" href="{% url 'update_customer' Cliente.id %}"><i
+                                <a class="dropdown-item" href="{% url 'delete_customer' Cliente.id %}"><i
                                         class='bx bx-trash-alt'></i>Eliminar cliente</a>
                             </div>
                         </div>

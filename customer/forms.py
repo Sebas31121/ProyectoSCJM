@@ -5,7 +5,7 @@ from .models import Cliente
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Cliente
-        fields = ['nickname', 'celular', 'deuda', 'abono', 'estado']
+        fields = ['nickname', 'celular', 'deuda', 'abono']
 
     def __init__(self, *args, **kwargs) -> None:
         super(CustomerForm, self).__init__(*args, **kwargs)
