@@ -14,6 +14,7 @@
                     <th>Nombre</th>
                     <th>Contacto</th>
                     <th>Ubicación</th>
+                    <th>Ajustes</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -30,9 +31,9 @@
                             </button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{% url 'update_supplier' Proveedor.id %}"><i
-                                        class="bx bxs-edit"></i>Editar Proveedor</a>
+                                        class="bx bxs-edit"></i>Editar proveedor</a>
                                 <a class="dropdown-item" href="{% url 'delete_supplier' Proveedor.id %}"><i
-                                        class='bx bx-trash-alt'></i>Eliminar Mesa</a>
+                                        class='bx bx-trash-alt'></i>Eliminar proveedor</a>
                             </div>
                         </div>
                     </td>

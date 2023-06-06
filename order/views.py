@@ -21,11 +21,11 @@ def OrderView(request):
 
     return render(request, template_name, context)
 
-
 class DataOrder(BaseModel):
     id: int
     price: float
-    table_number:int
+    table_number: int
+
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -35,12 +35,17 @@ def OrderSaveView(request):
     data_table = data.get("table_number")
     mesa = Mesa.objects.get(nro_mesa=int(data_table))
     order = Pedido.objects.create(nro_mesa=mesa)
+    productos_asignados = []
+
     for product in data_products:
-        data_order = DataOrder(id = product["Id"],price = product["price"],table_number = int(data_table))
+        data_order = DataOrder(id=product["Id"], price=product["price"], table_number=int(data_table))
         products = Product.objects.filter(id=data_order.id)
-        order.productos.set(products)
-        order.estado = 1
+        productos_asignados.extend(products)
+
+    order.productos.set(productos_asignados)
+    order.estado = 1
     order.save()
+
     # Verificación
     try:
         order_verify = Pedido.objects.get(id=order.id)
@@ -49,6 +54,7 @@ def OrderSaveView(request):
     except Pedido.DoesNotExist:
         success = False
         print("La orden no se guardó correctamente.")
+
     return JsonResponse({"success": success})
 
 @login_required(login_url='/accounts/login/')

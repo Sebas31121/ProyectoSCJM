@@ -49,8 +49,9 @@
                         <h5>Productos:</h5>
                         <ul>
                             {% for producto in order.productos.all %}
-                            <li>{{ producto.name }}, {{ producto.price }}</li>
+                            <li>{{ producto.name }}: {{ producto.price }}</li>
                             {% endfor %}
+                            Total: {{ total_price }}
                         </ul>
                     </div>
                     <div class="modal-footer">
