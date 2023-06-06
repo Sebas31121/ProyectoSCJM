@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path
 from .views import createCategoryView,createProductView,editCategoryView,editProductView,ListProductView,createUnityView,deleteProductView
 urlpatterns = [
     path('inventory/list/product', ListProductView.as_view(), name='inventory_list' ),

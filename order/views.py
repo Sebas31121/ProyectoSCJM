@@ -5,8 +5,6 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
-from order.forms import PedidoForm
 from inventory.models import Product
 from .models import Pedido
 from table.models import Mesa
@@ -32,12 +30,10 @@ class DataOrder(BaseModel):
 @csrf_exempt
 @require_http_methods(["POST"])
 def OrderSaveView(request):
-    
     data = json.loads(request.body.decode("utf-8"))
     data_products = data.get("products")
     data_table = data.get("table_number")
     mesa = Mesa.objects.get(nro_mesa=int(data_table))
-
     order = Pedido.objects.create(nro_mesa=mesa)
     for product in data_products:
         data_order = DataOrder(id = product["Id"],price = product["price"],table_number = int(data_table))
@@ -45,8 +41,6 @@ def OrderSaveView(request):
         order.productos.set(products)
         order.estado = 1
     order.save()
-    
-
     # Verificación
     try:
         order_verify = Pedido.objects.get(id=order.id)
@@ -56,8 +50,6 @@ def OrderSaveView(request):
         success = False
         print("La orden no se guardó correctamente.")
     return JsonResponse({"success": success})
-
-        
 
 @login_required(login_url='/accounts/login/')
 def preView(request):

@@ -1,7 +1,7 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.views.generic import ListView
-from .forms import CategoryForm, ProductForm, UnityForm,DeleteForm
-from .models import Category, Product,Unity
+from .forms import CategoryForm, ProductForm, UnityForm
+from .models import Category, Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 

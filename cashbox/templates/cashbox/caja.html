@@ -19,19 +19,48 @@
         <h1>Caja</h1>
     </center>
     <section style="display:flex;justify-content:space-around;flex-wrap:wrap;align-content:space-around;">
-        {% for table in tables%}
-        <div class="card mt-3" style="width:10rem;border-radius:3rem;">
+        {% for table, order in combined_data %}
+        <div class="card mt-3" style="width: 10rem; border-radius: 3rem;">
             <div class="card-body">
                 <center>
-                    <h4 class="card-title">Mesa #{{table.nro_mesa}}</h4>
+                    <h4 class="card-title">Mesa #{{ table.nro_mesa }}</h4>
                     <p class="card-text" style="color:#85bb65">$$$</p>
-                    <a href="{% url 'view_order' pedido.id %}" class="btn btn-primary">Ver pedido</a>
+                    {% if order %}
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ order.id }}">Ver
+                        pedido</a>
+                    {% else %}
+                    <p>No hay pedido</p>
+                    {% endif %}
                 </center>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal{{ order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Detalle del pedido</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Estado: {{ order.estado }}</h4>
+                        <h5>Productos:</h5>
+                        <ul>
+                            {% for producto in order.productos.all %}
+                            <li>{{ producto.name }}, {{ producto.price }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
             </div>
         </div>
         {% endfor %}
     </section>
-
     {% endblock page_content %}
 
 </body>

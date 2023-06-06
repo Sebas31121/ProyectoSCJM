@@ -36,6 +36,3 @@ class ProductForm(forms.ModelForm):
                 self.fields[field].widget.attrs.update({'class': 'form-control','readonly': True})  
             if field=="category":
                 self.fields[field].widget.attrs.update({'class': 'form-control','readonly': True})   
-
-class DeleteForm(forms.Form):
-    confirmacion = forms.BooleanField(label='¿Está seguro de que desea eliminar este producto?', required=True)
