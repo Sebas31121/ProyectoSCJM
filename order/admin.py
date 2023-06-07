@@ -1,4 +1,4 @@
 from django.contrib import admin
-from inventory.models import Product
-# Register your models here.
-admin.site.register(Product)
+from .models import Pedido
+
+admin.site.register(Pedido)
