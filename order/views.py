@@ -44,6 +44,7 @@ def OrderSaveView(request):
 
     order.productos.set(productos_asignados)
     order.estado = 1
+    order.autor_usuario = request.user
     order.save()
 
     # Verificación

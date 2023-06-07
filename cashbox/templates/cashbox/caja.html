@@ -24,7 +24,7 @@
             <div class="card-body">
                 <center>
                     <h4 class="card-title">Mesa #{{ table.nro_mesa }}</h4>
-                    <p class="card-text" style="color:#85bb65">$$$</p>
+                    <p class="card-text" style="color:#85bb65"><b>${{ order.total_pedido }}</b></p>
                     {% if order %}
                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ order.id }}">Ver
                         pedido</a>
@@ -46,12 +46,13 @@
                     </div>
                     <div class="modal-body">
                         <h4>Estado: {{ order.estado }}</h4>
+                        <h5>Realizado por: {{ order.autor_usuario.username }}</h5>
                         <h5>Productos:</h5>
                         <ul>
                             {% for producto in order.productos.all %}
-                            <li>{{ producto.name }}: {{ producto.price }}</li>
+                            <li>{{ producto.name }}: ${{ producto.price }}</li>
                             {% endfor %}
-                            Total: {{ total_price }}
+                            Total: ${{ order.total_pedido }}
                         </ul>
                     </div>
                     <div class="modal-footer">
