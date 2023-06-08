@@ -69,7 +69,7 @@
                     <h5 class="card-title" style="color:black">{{product.name}}</h5>
                     <p class="card-text" style="color: black">{{product.description}}</p>
                     <p class="card-text" style="color:#85bb65">${{product.price}}</p>
-                    <i class='bx bx-minus' style="color:black"></i>
+                    <i class='bx bx-minus' style="color:black" onclick="removeToCar({{product.id}},{{product.price}})"></i>
                     '0'
                     <i class='bx bx-plus' style="color:black" onclick="addToCar({{product.id}},{{product.price}})"></i>
                 </div>
@@ -112,6 +112,11 @@
             this.total+=Product.price;
             this.updateOrderTotal();
         }
+        removeProduct(Product){
+            this.products.push(Product);
+            this.total-=Product.price;
+            this.updateOrderTotal();
+        }
         updateOrderTotal(){
             let shoppingTotal = document.getElementById("orderTotal");
             this.products.forEach((product)=>{
@@ -138,6 +143,10 @@
     let addToCar =(itemId,price)=>{
         let product = new Product(itemId=itemId,price=price);
         car.addProduct(product);
+    }
+    let removeToCar =(itemId,price)=>{
+        let product = new Product(itemId=itemId,price=price);
+        car.removeProduct(product);
     }
     let btnSendData = document.getElementById("comandar");
     btnSendData.addEventListener("click",e=>{

@@ -29,13 +29,14 @@ def sumar_total_pedido(sender,instance,**kwargs):
     instance.save(update_fields=["total_pedido"])
     post_save.connect(sumar_total_pedido, sender=Pedido)
 
-@receiver(pre_save, sender = Pedido)
-def verificacion_estado_pedido(sender,instance,**kwargs):
-    latest_order = Pedido.objects.filter(nro_mesa=instance.nro_mesa).latest('fecha_hora')
-    print(latest_order.estado)
+@receiver(pre_save, sender=Pedido)
+def verificacion_estado_pedido(sender, instance, **kwargs):
+    try:
+        latest_order = Pedido.objects.filter(nro_mesa=instance.nro_mesa).latest('fecha_hora')
+    except Pedido.DoesNotExist:
+        latest_order = None
+
     if latest_order.estado == "3":
-        pre_save.disconnect(verificacion_estado_pedido, sender=Pedido)
-        instance.save()
-        pre_save.connect(verificacion_estado_pedido, sender=Pedido)
+        raise ValueError("No se permite enviar más datos cuando el estado es 3.")
     else:
         return

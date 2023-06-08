@@ -35,7 +35,6 @@
 </head>
 
 <body>
-  <!-- Layout wrapper -->
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
       <!-- Menu -->
@@ -154,24 +153,6 @@
             </a>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-user-circle"></i>
-              <div data-i18n="Account Settings">Usuarios</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-account-settings-account.html" class="menu-link">
-                  <div data-i18n="Account">Visualizar usuarios</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-account-settings-connections.html" class="menu-link">
-                  <div data-i18n="Connections">Permisos usuario</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-group"></i>
               <div data-i18n="Account Settings">Clientes</div>
             </a>
@@ -204,6 +185,12 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="menu-item">
+            <a href="/admin/" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-user-circle"></i>
+              <div data-i18n="Account Settings">Panel administrativo</div>
+            </a>
           </li>
           <!-- <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -241,7 +228,13 @@
         <!-- Content wrapper -->
         <div class="container-xxl flex-grow-1 container-p-y">
           <div class="content-wrapper">
-            <!-- Content -->
+            <nav class="layout-navbar navbar navbar-detached align-items-center bg-navbar-theme mb-4">
+              <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                  <i class="bx bx-menu bx-sm"></i>
+                </a>
+              </div>
+            </nav>
             <div class="row">
               {% block page_content %}
 

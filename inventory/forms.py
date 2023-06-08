@@ -26,13 +26,19 @@ class UnityForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'stock','img_route', 'unity','category']
+        fields = ['name', 'description', 'price', 'stock', 'img_route', 'unity', 'category']
 
-    def __init__(self, *arg, **kwargs) -> None:
-        super(ProductForm, self).__init__(*arg, **kwargs)
+    def __init__(self, *args, **kwargs):
+        self.is_edit = kwargs.pop('is_edit', False)
+        super(ProductForm, self).__init__(*args, **kwargs)
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
-            if field=="unity":
-                self.fields[field].widget.attrs.update({'class': 'form-control','readonly': True})  
-            if field=="category":
-                self.fields[field].widget.attrs.update({'class': 'form-control','readonly': True})   
+        if self.is_edit:
+            self.fields['unity'].disabled = True
+            self.fields['category'].disabled = True
+
+    def clean(self):
+        cleaned_data = super(ProductForm, self).clean()
+        if self.is_edit and ('unity' in self.changed_data or 'category' in self.changed_data):
+            self.add_error(None, "No tienes permiso para editar los campos 'Unity' y 'Category'.")
+        return cleaned_data
