@@ -64,8 +64,13 @@
         </div>
         {% endfor %}
     </section>
+    <script>
+        setInterval(function() {
+        // Actualizar la página
+        window.location.reload();
+        }, 5000); // Se ejecutará cada 1000 milisegundos (1 segundo)
+    </script>
     {% endblock page_content %}
-
 </body>
 
 </html>
