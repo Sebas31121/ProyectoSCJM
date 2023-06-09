@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -69,7 +70,8 @@
                     <h5 class="card-title" style="color:black">{{product.name}}</h5>
                     <p class="card-text" style="color: black">{{product.description}}</p>
                     <p class="card-text" style="color:#85bb65">${{product.price}}</p>
-                    <i class='bx bx-minus' style="color:black" onclick="removeToCar({{product.id}},{{product.price}})"></i>
+                    <i class='bx bx-minus' style="color:black"
+                        onclick="removeToCar({{product.id}},{{product.price}})"></i>
                     '0'
                     <i class='bx bx-plus' style="color:black" onclick="addToCar({{product.id}},{{product.price}})"></i>
                 </div>
@@ -89,47 +91,55 @@
         timer: 3000,
         timerProgressBar: true,
     })
-    
+
     const table_number = localStorage.getItem("table_number");
-    window.addEventListener("load", (e)=>{
+    window.addEventListener("load", (e) => {
         console.log(table_number);
-        document.getElementById("devolverse").innerText="Mesa " + table_number;
+        document.getElementById("devolverse").innerText = "Mesa " + table_number;
     });
     class Product {
-        constructor(itemId, price,name){
-            this.name=name;
-            this.Id=itemId;
-            this.price=price;
+        constructor(itemId, price, name) {
+            this.name = name;
+            this.Id = itemId;
+            this.price = price;
         }
     }
-    class ShoppingCar{
-        constructor(){
-            this.products=[];
-            this.total=0;
+    class ShoppingCar {
+        constructor() {
+            this.products = [];
+            this.total = 0;
         }
-        addProduct(Product){
+        addProduct(Product) {
             this.products.push(Product);
-            this.total+=Product.price;
+            this.total += Product.price;
             this.updateOrderTotal();
         }
-        removeProduct(Product){
+        removeProduct(Product) {
+            // Verificar si el total es mayor que el precio del producto
+            if (this.total > Product.price) {
+                // Restar el precio del producto al total
+                this.total -= Product.price;
+            } else {
+                // El total es igual o menor que el precio del producto, no se resta más
+                this.total = 0;
+            }
+            // Agregar el producto y actualizar el total del pedido
             this.products.push(Product);
-            this.total-=Product.price;
             this.updateOrderTotal();
         }
-        updateOrderTotal(){
+        updateOrderTotal() {
             let shoppingTotal = document.getElementById("orderTotal");
-            this.products.forEach((product)=>{
+            this.products.forEach((product) => {
                 console.log(product.Id);
             });
-            shoppingTotal.innerText=this.total;
+            shoppingTotal.innerText = this.total;
         }
-        async sendDataOrder(){
+        async sendDataOrder() {
             console.log(JSON.stringify(this.products));
-            fetch("{% url 'order_save' %}",{
-                method:"POST",
-                headers: {"Content-Type": "application/json"},
-                body: await JSON.stringify({'table_number': table_number,'products': this.products}),
+            fetch("{% url 'order_save' %}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: await JSON.stringify({ 'table_number': table_number, 'products': this.products }),
             }).then(response => response.json()).then(data => {
                 Toast.fire({
                     icon: 'success',
@@ -139,19 +149,33 @@
 
         }
     }
+    setInterval(function () {
+        // Lógica de la consulta a la base de datos
+        fetch('/order/preview')
+            .then(response => response.json())
+            .then(data => {
+                // Procesar los datos recibidos
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error al realizar la consulta:', error);
+            });
+    }, 5000); // Se ejecutará cada 5000 milisegundos (5 segundos)
+
     let car = new ShoppingCar();
-    let addToCar =(itemId,price)=>{
-        let product = new Product(itemId=itemId,price=price);
+    let addToCar = (itemId, price) => {
+        let product = new Product(itemId = itemId, price = price);
         car.addProduct(product);
     }
-    let removeToCar =(itemId,price)=>{
-        let product = new Product(itemId=itemId,price=price);
+    let removeToCar = (itemId, price) => {
+        let product = new Product(itemId = itemId, price = price);
         car.removeProduct(product);
     }
     let btnSendData = document.getElementById("comandar");
-    btnSendData.addEventListener("click",e=>{
+    btnSendData.addEventListener("click", e => {
         e.preventDefault()
         car.sendDataOrder();
     })
 </script>
+
 </html>

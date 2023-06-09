@@ -36,17 +36,14 @@ def OrderSaveView(request):
     mesa = Mesa.objects.get(nro_mesa=int(data_table))
     order = Pedido.objects.create(nro_mesa=mesa)
     productos_asignados = []
-
     for product in data_products:
         data_order = DataOrder(id=product["Id"], price=product["price"], table_number=int(data_table))
         products = Product.objects.filter(id=data_order.id)
         productos_asignados.extend(products)
-
     order.productos.set(productos_asignados)
     order.estado = 1
     order.autor_usuario = request.user
     order.save()
-
     # Verificación
     try:
         order_verify = Pedido.objects.get(id=order.id)
@@ -55,7 +52,6 @@ def OrderSaveView(request):
     except Pedido.DoesNotExist:
         success = False
         print("La orden no se guardó correctamente.")
-
     return JsonResponse({"success": success})
 
 @login_required(login_url='/accounts/login/')
