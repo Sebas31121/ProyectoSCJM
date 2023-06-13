@@ -56,7 +56,8 @@
         <h1>System SJD</h1>
         <p>{{request.user.email}}</p>
         <div id="nav">
-            <i class='bx bx-copy-alt' style="font-size: 4rem; cursor: pointer;"></i>
+            <a data-bs-toggle="modal" data-bs-target="#modal">
+                <i class='bx bx-copy-alt' style="font-size: 4rem; cursor: pointer;"></i></a>
         </div>
         <br>
         <a href="{% url 'preview_order'%}"><button id="devolverse"></button></a><br><br>
@@ -79,6 +80,31 @@
         </div><br>
         {%endfor%}
         <br><br>
+        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Detalle del pedido</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Estado: {{ order.estado }}</h4>
+                        <h5>Realizado por: {{ order.autor_usuario.username }}</h5>
+                        <h5>Productos:</h5>
+                        <ul>
+                            {% for producto in order.productos.all %}
+                            <li>{{ producto.name }}: ${{ producto.price }}</li>
+                            {% endfor %}
+                            Total: ${{ order.total_pedido }}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <i class='bx bx-purchase-tag-alt' style="font-size:2.5rem; cursor:pointer;"></i>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js "></script>

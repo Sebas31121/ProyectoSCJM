@@ -13,7 +13,6 @@
 </head>
 
 <body>
-    <!-- Content -->
     {% block page_content%}
     <center>
         <h1>Caja</h1>
@@ -40,23 +39,35 @@
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Detalle del pedido</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header" style="flex-direction:column;">
+                        <h3 class="modal-title">Detalle del pedido</h3><br>
+                        <i class='bx bx-purchase-tag-alt' style="font-size:2.5rem; cursor:pointer;"></i><br>
+                        <p>Método de pago: </p>
+                        <select class="form-select  " aria-label=".form-select-lg example">
+                            <option value="1">Efectivo</option>
+                            <option value="2">Transferencia</option>
+                            <option value="3">Tarjeta</option>
+                            <option value="4">Descuento</option>
+                            <option value="5">Cortesía</option>
+                        </select>
                     </div>
+                    <div class="modal-body" style="text-align: center;">
+                        <h5>Realizado por: <b>{{ order.autor_usuario.username }}</b></h5>
+                    </div>
+
                     <div class="modal-body">
-                        <h4>Estado: {{ order.estado }}</h4>
-                        <h5>Realizado por: {{ order.autor_usuario.username }}</h5>
-                        <h5>Productos:</h5>
                         <ul>
+                            <h5>Productos:</h5>
                             {% for producto in order.productos.all %}
                             <li>{{ producto.name }}: ${{ producto.price }}</li>
                             {% endfor %}
-                            Total: ${{ order.total_pedido }}
+                            <b>Total: ${{ order.total_pedido }}</b>
                         </ul>
                     </div>
-                    <div class="modal-footer">
-                        <i class='bx bx-purchase-tag-alt' style="font-size:2.5rem; cursor:pointer;"></i>
+                    <div class="modal-footer" style="display:flex;justify-content: space-around">
+                        <input class="form-control mb-4" type="text">
+                        <button type="button" class="btn btn-success">Pagar</button>
+                        <button type="button" class="btn btn-warning">Reversar</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
@@ -65,11 +76,11 @@
         {% endfor %}
     </section>
     <script>
-        setInterval(function() {
-        // Actualizar la página
-        window.location.reload();
-        }, 5000); // Se ejecutará cada 1000 milisegundos (1 segundo)
+        setInterval(function () {
+            window.location.reload();
+        }, 25000);
     </script>
     {% endblock page_content %}
 </body>
+
 </html>
