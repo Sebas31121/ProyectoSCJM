@@ -71,9 +71,8 @@
                     <h5 class="card-title" style="color:black">{{product.name}}</h5>
                     <p class="card-text" style="color: black">{{product.description}}</p>
                     <p class="card-text" style="color:#85bb65">${{product.price}}</p>
-                    <i class='bx bx-minus' style="color:black"
-                        onclick="removeToCar({{product.id}},{{product.price}})"></i>
-                    <span style="color: black;">0</span>
+                    <i class='bx bx-minus' style="color:black" onclick="removeToCar({{product.id}},{{product.price}})"></i>
+                    <span style="color: black;" id="contador-{{product.id}}">0</span>
                     <i class='bx bx-plus' style="color:black" onclick="addToCar({{product.id}},{{product.price}})"></i>
                 </div>
             </div>
@@ -124,32 +123,37 @@
         document.getElementById("devolverse").innerText = "Mesa " + table_number;
     });
     class Product {
-        constructor(itemId, price, name) {
+        constructor(itemId, price, name, cantidad) {
             this.name = name;
             this.Id = itemId;
             this.price = price;
+            this.cantidad = cantidad;
+        }
+
+        addContainer() {
+            this.cantidad = this.cantidad + 1;
+            document.getElementById('contador-'+ this.Id).innerText = this.cantidad;
         }
     }
     class ShoppingCar {
+        let 
         constructor() {
             this.products = [];
             this.total = 0;
+            this.cantidad = 0;
         }
         addProduct(Product) {
             this.products.push(Product);
+            console.log(this.products);
             this.total += Product.price;
             this.updateOrderTotal();
         }
         removeProduct(Product) {
-            // Verificar si el total es mayor que el precio del producto
             if (this.total > Product.price) {
-                // Restar el precio del producto al total
                 this.total -= Product.price;
             } else {
-                // El total es igual o menor que el precio del producto, no se resta más
                 this.total = 0;
             }
-            // Agregar el producto y actualizar el total del pedido
             this.products.push(Product);
             this.updateOrderTotal();
         }
@@ -176,26 +180,47 @@
         }
     }
     setInterval(function () {
-        // Lógica de la consulta a la base de datos
         fetch('/order/preview')
             .then(response => response.json())
             .then(data => {
-                // Procesar los datos recibidos
                 console.log(data);
             })
             .catch(error => {
                 console.error('Error al realizar la consulta:', error);
             });
-    }, 5000); // Se ejecutará cada 5000 milisegundos (5 segundos)
+    }, 5000);
 
     let car = new ShoppingCar();
     let addToCar = (itemId, price) => {
-        let product = new Product(itemId = itemId, price = price);
-        car.addProduct(product);
+        debugger;
+        console.log(this.cantidad);
+
+        if(car.products.length == 0){
+            let product = new Product(itemId = itemId, price = price, name = name, cantidad = 0);
+            product.addContainer();
+            car.addProduct(product);
+            return;
+        }
+
+        car.products.forEach((producto) => {
+            if (producto.Id == itemId){
+                producto.addContainer();
+                return;
+            } 
+            else {
+                let product = new Product(itemId = itemId, price = price, name = name, cantidad = 0);
+                product.addContainer();
+                car.addProduct(product);
+                return;
+            }
+        });
+
+        
     }
     let removeToCar = (itemId, price) => {
-        let product = new Product(itemId = itemId, price = price);
+        let product = new Product(itemId = itemId, price = price, name = name, cantidad = this.cantidad);
         car.removeProduct(product);
+
     }
     let btnSendData = document.getElementById("comandar");
     btnSendData.addEventListener("click", e => {
