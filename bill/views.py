@@ -1,84 +1,43 @@
-from django.shortcuts import render,redirect
-from django import datetime
-from django.contrib import messages
-from inventory.models import Product
-from django.views.generic import ListView, CreateView, UpdateView
-from .models import BillBase, BillDetalle
-from django.contrib.auth.decorators import login_required, permission_required
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.urls import reverse
+from django.views import View
+from reportlab.pdfgen import canvas
+from .models import Factura
 
-class FacturaView(ListView):
-    model = BillBase
-    template_name = 'factura/factura_list.html'
-    context_object_name = 'obj'
-    permission_required = 'factura.view_factura'
+class FacturaPDFView(View):
+    def get(self, request, *args, **kwargs):
+        # Obtén los datos de la factura y los productos
+        factura = Factura.objects.get(pk=kwargs['factura_id'])
+        productos = factura.productos.all()
 
-@login_required(login_url='/login/')
-def facturas(request, id=None):
-    template_name = 'factura/facturas.html'
-    detalle = {}
-    
-    if request.method == "GET":
-        enc = BillBase.objects.filter(pk=id).first()
-        if not enc:
-            encabezado = {
-                'id': 0,
-                'fecha': datetime.datetime.today(),
-                'sub_total': 0.00,
-                'descuento': 0.00,
-                'total': 0.00,
-            }
-            detalle = None
-        else:
-            encabezado = {
-                'id': enc.id,
-                'fecha': datetime.datetime.today(),
-                'sub_total': enc.sub_total,
-                'descuento': enc.descuento,
-                'total': enc.total,
-            }
-            detalle = BillDetalle.objects.filter(factura=enc)
+        # Crea el objeto PDF
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="factura.pdf"'
+        p = canvas.Canvas(response)
 
-        context = {"enc": encabezado, "det": detalle}
+        # Agrega los datos de la factura al PDF
+        p.drawString(100, 100, f'Número de factura: {factura.numero}')
+        p.drawString(100, 120, f'Fecha: {factura.fecha}')
+        # Agrega más detalles de la factura...
 
-    if request.method == 'POST':
-        fecha = request.POST.get("fecha")
-        # si no hay id significa que la factura es nueva
-        if not id:
-            enc = BillBase(
-                fecha=fecha,
-                user=request.user
-            )
-            if enc:
-                enc.save()
-                id = enc.id
-        else:
-            enc = BillBase.objects.filter(pk=id).first()
-            if enc:
-                enc.user_modification = request.user.id
-                enc.save()
-        if not id:
-            messages.error(request, 'No se detecto ningun numero de factura')
-            return redirect('factura_list')
+        # Agrega los productos al PDF
+        y = 200
+        for producto in productos:
+            p.drawString(100, y, f'Producto: {producto.nombre}')
+            p.drawString(100, y + 20, f'Precio: {producto.precio}')
+            # Agrega más detalles del producto...
+            y += 40
 
-        codigo = request.POST.get('codigo')
-        cantidad = request.POST.get('cantidad')
-        precio = request.POST.get('precio')
-        s_total = request.POST.get('sub_total_detalle')
-        descuento = request.POST.get('descuento_detalle')
-        total = request.POST.get('total_detalle')
+        p.showPage()
+        p.save()
+        return response
 
-        pro = Product.objects.get(codigo=codigo)
-        det = BillBase(
-            factura=enc,
-            producto=pro,
-            cantidad=cantidad,
-            precio=precio,
-            sub_total=s_total,
-            descuento=descuento,
-            total=total,
-        )
-        if det:
-            det.save()
-        return redirect('factura_edit', id=id)
+def generar_factura(request, factura_id):
+    # Lógica para generar la factura...
+    factura = Factura.objects.get(pk=factura_id)
 
-    return render(request, template_name, context)
+    # Obtén el enlace al PDF de la factura
+    pdf_url = reverse('factura_pdf', kwargs={'factura_id': factura.id})
+
+    # Haz algo con el enlace al PDF...
