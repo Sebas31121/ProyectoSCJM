@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views import View
 from reportlab.pdfgen import canvas
 from .models import Factura
+from django.shortcuts import redirect
 
 class FacturaPDFView(View):
     def get(self, request, *args, **kwargs):
@@ -41,3 +42,4 @@ def generar_factura(request, factura_id):
     pdf_url = reverse('factura_pdf', kwargs={'factura_id': factura.id})
 
     # Haz algo con el enlace al PDF...
+    return redirect(pdf_url)

@@ -64,7 +64,7 @@
         <br>
         <a href="{% url 'preview_order'%}"><button id="devolverse"></button></a><br><br>
         <button type="submit" id="comandar">Comandar</button>
-        <p id="orderTotal">0</p>
+        <p>Total: $<span id="orderTotal">0</span></p>
         {% for product in all_products %}
         <div class="col-12">
             <div class="card" style="border-radius: 5rem;">
