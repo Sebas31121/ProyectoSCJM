@@ -4,7 +4,6 @@ from .forms import CategoryForm, ProductForm, UnityForm
 from .models import Category, Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db import transaction
 
 @login_required(login_url='/accounts/login/')
 def createCategoryView (request):
@@ -102,22 +101,26 @@ def deleteProductView(request, pk):
 @login_required(login_url='/account/login/')
 def product_detail(request, pk):
     product = get_object_or_404(Product, id=pk)
-    
+
     if request.method == 'POST':
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            quantity = form.cleaned_data['quantity']
-            with transaction.atomic():
-                product = Product.objects.select_for_update().get(id=pk)
-                product.stock += quantity
-                product.save()
-            return redirect('detalle_producto', pk=pk)
-    else:
-        form = ProductForm()  # Crea una instancia del formulario
+        quantity = int(request.POST['quantity'])
+        action = request.POST['action']
+
+        if action == 'add':
+            product.stock += quantity
+            messages.success(request, f'Se agregaron {quantity} unidades al stock de {product.name}.')
+        elif action == 'subtract':
+            if quantity > product.stock:
+                messages.error(request, 'La cantidad ingresada es mayor al stock actual.')
+            else:
+                product.stock -= quantity
+                messages.success(request, f'Se restaron {quantity} unidades al stock de {product.name}.')
+
+        product.save()
+        return redirect('inventory_list')
 
     template_name = 'inventory/product_detail.html'
     context = {
-        'form': form,
-        'product': product,  # Asegúrate de pasar el objeto product al contexto
+        'product': product,
     }
     return render(request, template_name, context)

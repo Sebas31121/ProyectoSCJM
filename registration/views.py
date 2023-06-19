@@ -19,6 +19,10 @@ class SignUpView(CreateView):
         messages.success(self.request, '¡Usuario registrado con éxito!')
         return response
 
+    def form_invalid(self, form):
+        messages.error(self.request, '¡Oops! Hubo un error en el formulario. Por favor, verifica los datos ingresados.')
+        return super().form_invalid(form)
+
 def profile(request):
     return render(request,'registration/profile.html')
 
@@ -26,12 +30,17 @@ class SignOutView(LogoutView):
     pass
 
 @login_required(login_url='/account/login/')
-def editProfileView (request, pk):
+def editProfileView(request, pk):
     user = get_object_or_404(User, id=pk)
-    userform = UserRegistrationForm(request.POST or None,instance=user)
+    userform = UserRegistrationForm(request.POST or None, instance=user)
     template_name = 'registration/profile.html'
-    if userform.is_valid():
-        userform.save()
-        messages.success(request=request, message="Este usuario se actualizó con éxito")
-        return HttpResponseRedirect('/')
-    return render(request,template_name,{'title':'System SJD - Actualizar usuario','title_form':"Actualizar usuario",'form':userform})
+
+    if request.method == 'POST':
+        if userform.is_valid():
+            userform.save()
+            messages.success(request, "Este usuario se actualizó con éxito")
+            return HttpResponseRedirect('/')
+        else:
+            messages.error(request, "¡Oops! Hubo un error en el formulario. Por favor, verifica los datos ingresados.")
+
+    return render(request, template_name, {'title': 'System SJD - Actualizar usuario', 'title_form': "Actualizar usuario", 'form': userform})

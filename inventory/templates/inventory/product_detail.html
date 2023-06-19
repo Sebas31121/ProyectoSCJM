@@ -7,19 +7,28 @@
             <h5 class="mb-0">{{ product.name }}</h5>
         </div>
         <div class="card-body">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <p>Descripción: {{ product.description }}</p>
             <p>Precio: ${{ product.price }}</p>
             <p>Cantidad en stock: {{ product.stock }}</p>
             <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-sm-4">
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="number" name="quantity" min="1" required>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Agregar</button>
-                <button type="submit" class="btn btn-danger mt-3">Disminuir</button>
+                <button type="submit" class="btn btn-primary mt-3" name="action" value="add">Agregar</button>
+                <button type="submit" class="btn btn-danger mt-3" name="action" value="subtract">Disminuir</button>
             </form>
         </div>
     </div>
 </div>
+
 {% endblock %}
