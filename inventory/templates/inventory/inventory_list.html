@@ -31,6 +31,7 @@
               </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="{% url 'inventory_update_product' product.id %}"><i class="bx bxs-edit"></i>Editar producto</a>
+                <a class="dropdown-item" href="{% url 'detalle_producto' product.id %}"><i class="bx bx-plus"></i>Entrada o salida</a>
                 <a class="dropdown-item" href="{% url 'eliminar_producto' product.id %}"><i class='bx bx-trash-alt'></i>Eliminar producto</a>
               </div>
             </div>

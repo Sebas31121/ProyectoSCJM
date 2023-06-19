@@ -1,9 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.views.generic import ListView
 from .forms import CategoryForm, ProductForm, UnityForm
 from .models import Category, Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import transaction
 
 @login_required(login_url='/accounts/login/')
 def createCategoryView (request):
@@ -70,6 +71,7 @@ def editProductView(request, pk):
 
     form_inventory.fields['unity'].disabled = True  # Desactivar el campo 'unity'
     form_inventory.fields['category'].disabled = True  # Desactivar el campo 'category'
+    form_inventory.fields['stock'].disabled = True  # Desactivar el campo 'category'
 
     template_name = 'inventory/inventory_form.html'
 
@@ -96,3 +98,26 @@ def deleteProductView(request, pk):
     product.save()
     messages.success(request=request, message="Este producto se eliminó con éxito")
     return HttpResponseRedirect('/inventory/list/product')
+
+@login_required(login_url='/account/login/')
+def product_detail(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            quantity = form.cleaned_data['quantity']
+            with transaction.atomic():
+                product = Product.objects.select_for_update().get(id=pk)
+                product.stock += quantity
+                product.save()
+            return redirect('detalle_producto', pk=pk)
+    else:
+        form = ProductForm()  # Crea una instancia del formulario
+
+    template_name = 'inventory/product_detail.html'
+    context = {
+        'form': form,
+        'product': product,  # Asegúrate de pasar el objeto product al contexto
+    }
+    return render(request, template_name, context)

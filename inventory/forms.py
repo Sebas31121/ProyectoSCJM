@@ -36,9 +36,4 @@ class ProductForm(forms.ModelForm):
         if self.is_edit:
             self.fields['unity'].disabled = True
             self.fields['category'].disabled = True
-
-    def clean(self):
-        cleaned_data = super(ProductForm, self).clean()
-        if self.is_edit and ('unity' in self.changed_data or 'category' in self.changed_data):
-            self.add_error(None, "No tienes permiso para editar los campos 'Unity' y 'Category'.")
-        return cleaned_data
+            self.fields['stock'].disabled = True
