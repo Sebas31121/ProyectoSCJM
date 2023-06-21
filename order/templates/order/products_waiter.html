@@ -12,9 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@1,700&display=swap" rel="stylesheet">
-    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.min.css " rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.min.css" rel="stylesheet">
     <style type="text/css">
         #body {
             text-align: center;
@@ -56,65 +54,63 @@
 <body>
     <div id="body">
         <h1>System SJD</h1>
-        <p>{{request.user.email}}</p>
+        <p>{{ request.user.email }}</p>
         <div id="nav">
             <a data-bs-toggle="modal" data-bs-target="#modal">
-                <i class='bx bx-copy-alt' style="font-size: 4rem; cursor: pointer;"></i></a>
+                <i class='bx bx-copy-alt' style="font-size: 4rem; cursor: pointer;"></i>
+            </a>
         </div>
         <br>
-        <a href="{% url 'preview_order'%}"><button id="devolverse"></button></a><br><br>
+        <a href="{% url 'preview_order' %}"><button id="devolverse"></button></a><br><br>
         <button type="submit" id="comandar">Comandar</button>
-        <p>Total: $<span id="orderTotal">0</span></p>
+        <p id="orderTotal">0</p>
         {% for product in all_products %}
         <div class="col-12">
             <div class="card" style="border-radius: 5rem;">
                 <div class="card-body">
-                    <img class="card-img-bottom" src="{{product.img_route.url}}" style="width:7rem; height:7rem;">
-                    <h5 class="card-title" style="color:black">{{product.name}}</h5>
-                    <p class="card-text" style="color: black">{{product.description}}</p>
-                    <p class="card-text" style="color:#85bb65">${{product.price}}</p>
+                    <img class="card-img-bottom" src="{{ product.img_route.url }}" style="width:7rem; height:7rem;">
+                    <h5 class="card-title" style="color:black">{{ product.name }}</h5>
+                    <p class="card-text" style="color: black">{{ product.description }}</p>
+                    <p class="card-text" style="color:#85bb65">${{ product.price }}</p>
                     <i class='bx bx-minus' style="color:black"
-                        onclick="removeToCar({{product.id}},{{product.price}})"></i>
-                    <span style="color: black;">0</span>
-                    <i class='bx bx-plus' style="color:black" onclick="addToCar({{product.id}},{{product.price}})"></i>
+                        onclick="removeFromCar({{ product.id }},{{ product.price }})"></i>
+                    <span style="color: black;" id="contador-{{ product.id }}">0</span>
+                    <i class='bx bx-plus' style="color:black"
+                        onclick="addToCar({{ product.id }},{{ product.price }})"></i>
                 </div>
             </div>
         </div><br>
-        {%endfor%}
+        {% endfor %}
         <br><br>
-        <div class="modal fade" id="modal{{ order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" style="color:black">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header" style="flex-direction:column;">
-                    <h3 class="modal-title">Detalle del pedido</h3><br>
-                    <i class='bx bx-purchase-tag-alt' style="font-size:2.5rem; cursor:pointer;"></i><br>
-                </div>
-                <div class="modal-body" style="text-align: center;">
-                    <h5><b>{{ order.autor_usuario.username }}</b></h5>
-                </div>
-
-                <div class="modal-body" style="text-align:left;">
-                    <ul>
+        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Detalle del pedido</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Estado: {{ order.estado }}</h4>
+                        <h5>Realizado por: {{ order.autor_usuario.username }}</h5>
                         <h5>Productos:</h5>
-                        {% for producto in order.productos.all %}
-                        <li>{{ producto.name }}: ${{ producto.price }}</li>
-                        {% endfor %}
-                        <b>Total: ${{ order.total_pedido }}</b>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <ul>
+                            {% for producto in order.productos.all %}
+                            <li>{{ producto.name }}: ${{ producto.price }}</li>
+                            {% endfor %}
+                            Total: ${{ order.total_pedido }}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <i class='bx bx-purchase-tag-alt' style="font-size:2.5rem; cursor:pointer;"></i>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
 </body>
-<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js"></script>
 <script>
-
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -128,85 +124,142 @@
         console.log(table_number);
         document.getElementById("devolverse").innerText = "Mesa " + table_number;
     });
+
     class Product {
-        constructor(itemId, price, name) {
+        constructor(itemId, price, name, cantidad) {
             this.name = name;
             this.Id = itemId;
             this.price = price;
+            this.cantidad = cantidad;
+        }
+
+        addContainer() {
+            this.cantidad = this.cantidad + 1;
+            document.getElementById('contador-' + this.Id).innerText = this.cantidad;
         }
     }
+
     class ShoppingCar {
         constructor() {
             this.products = [];
             this.total = 0;
         }
-        addProduct(Product) {
-            this.products.push(Product);
-            this.total += Product.price;
+
+        addProduct(product) {
+            this.products.push(product);
+            this.total += product.price;
             this.updateOrderTotal();
         }
-        removeProduct(Product) {
-            // Verificar si el total es mayor que el precio del producto
-            if (this.total > Product.price) {
-                // Restar el precio del producto al total
-                this.total -= Product.price;
-            } else {
-                // El total es igual o menor que el precio del producto, no se resta más
-                this.total = 0;
+
+        removeProduct(product) {
+            const index = this.products.indexOf(product);
+            if (index > -1) {
+                this.products.splice(index, 1);
+                this.total -= product.price;
             }
-            // Agregar el producto y actualizar el total del pedido
-            this.products.push(Product);
+            else {
+                this.total = 0
+            }
             this.updateOrderTotal();
         }
+
         updateOrderTotal() {
-            let shoppingTotal = document.getElementById("orderTotal");
-            this.products.forEach((product) => {
-                console.log(product.Id);
-            });
+            const shoppingTotal = document.getElementById("orderTotal");
             shoppingTotal.innerText = this.total;
         }
-        async sendDataOrder() {
-            console.log(JSON.stringify(this.products));
-            fetch("{% url 'order_save' %}", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: await JSON.stringify({ 'table_number': table_number, 'products': this.products }),
-            }).then(response => response.json()).then(data => {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Pedido creado con exito'
-                })
-            })
 
+        async sendDataOrder() {
+            const data = {
+                'table_number': table_number,
+                'products': this.products
+            };
+
+            try {
+                const response = await fetch("{% url 'order_save' %}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Pedido creado con éxito'
+                    });
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Error al enviar el pedido'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error al enviar el pedido'
+                });
+            }
         }
     }
+
+    const car = new ShoppingCar();
+
+    let addToCar = (itemId, price) => {
+        let existingProduct = car.products.find(product => product.Id === itemId);
+        if (existingProduct) {
+            existingProduct.addContainer();
+            car.total += price;
+        } else {
+            let product = new Product(itemId, price, 'name', 0);
+            product.addContainer();
+            car.addProduct(product);
+        }
+        car.updateOrderTotal();
+    };
+
+
+
+    function removeFromCar(itemId, price) {
+        let productIndex = -1;
+        for (let i = 0; i < car.products.length; i++) {
+            if (car.products[i].Id === itemId) {
+                productIndex = i;
+                break;
+            }
+        }
+
+        if (productIndex !== -1) {
+            const product = car.products[productIndex];
+            if (product.cantidad > 1) {
+                product.cantidad--;
+                document.getElementById('contador-' + product.Id).innerText = product.cantidad;
+            } else {
+                car.products.splice(productIndex, 1);
+                document.getElementById('contador-' + product.Id).innerText = '0';
+            }
+            car.total -= product.price;
+            car.updateOrderTotal();
+        }
+    }
+
+
+    const btnSendData = document.getElementById("comandar");
+    btnSendData.addEventListener("click", (e) => {
+        e.preventDefault();
+        car.sendDataOrder();
+    });
+
     setInterval(function () {
-        // Lógica de la consulta a la base de datos
         fetch('/order/preview')
             .then(response => response.json())
             .then(data => {
-                // Procesar los datos recibidos
                 console.log(data);
             })
             .catch(error => {
                 console.error('Error al realizar la consulta:', error);
             });
-    }, 5000); // Se ejecutará cada 5000 milisegundos (5 segundos)
-
-    let car = new ShoppingCar();
-    let addToCar = (itemId, price) => {
-        let product = new Product(itemId = itemId, price = price);
-        car.addProduct(product);
-    }
-    let removeToCar = (itemId, price) => {
-        let product = new Product(itemId = itemId, price = price);
-        car.removeProduct(product);
-    }
-    let btnSendData = document.getElementById("comandar");
-    btnSendData.addEventListener("click", e => {
-        e.preventDefault()
-        car.sendDataOrder();
-    })
+    }, 5000);
 </script>
 
 </html>
