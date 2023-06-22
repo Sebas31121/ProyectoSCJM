@@ -1,7 +1,6 @@
 from django import forms
 from .models import Category, Product, Unity
 
-
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
@@ -22,7 +21,6 @@ class UnityForm(forms.ModelForm):
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
 
-
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -33,7 +31,16 @@ class ProductForm(forms.ModelForm):
         super(ProductForm, self).__init__(*args, **kwargs)
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({'class': 'form-control mt-1'})
+        
         if self.is_edit:
-            self.fields['unity'].disabled = True
-            self.fields['category'].disabled = True
-            self.fields['stock'].disabled = True
+            self.fields['stock'].widget.attrs['readonly'] = 'readonly'
+            self.fields['unity'].widget.attrs['disabled'] = 'disabled'
+            self.fields['category'].widget.attrs['disabled'] = 'disabled'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.is_edit:
+            cleaned_data['stock'] = self.instance.stock
+            cleaned_data['unity'] = self.instance.unity
+            cleaned_data['category'] = self.instance.category
+        return cleaned_data

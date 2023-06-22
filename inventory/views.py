@@ -31,7 +31,7 @@ def editCategoryView (request,pk):
         return HttpResponseRedirect('/inventory/list/product')
 
     return render(request,template_name,{'title':'SCJM-Actualizar Categoria','title_form':"Actualizar Categoria",'form':categoryform,"obj":category})
-    
+
 @login_required(login_url='/account/login/')
 def createProductView(request):
     template_name = 'inventory/inventory_form.html'
@@ -42,7 +42,7 @@ def createProductView(request):
     if request.method == 'POST':
         form_inventory = ProductForm(request.POST, request.FILES)
         if form_inventory.is_valid():
-            product = form_inventory.save()
+            form_inventory.save()
             messages.success(request=request, message="Este producto se creó con éxito")
             return HttpResponseRedirect('/inventory/list/product')
 
@@ -57,24 +57,17 @@ class ListProductView(ListView):
 @login_required(login_url='/account/login/')
 def editProductView(request, pk):
     product = get_object_or_404(Product, id=pk)
-
+    template_name = 'inventory/inventory_form.html'
     if request.method == 'POST':
-        form_inventory = ProductForm(request.POST, request.FILES, instance=product)
-        if form_inventory.is_valid():
-            form_inventory.save()
+        productform = ProductForm(request.POST, instance=product, is_edit=True)
+        if productform.is_valid():
+            productform.save()
             messages.success(request=request, message="Este producto se actualizó con éxito")
             return HttpResponseRedirect('/inventory/list/product')
-
     else:
-        form_inventory = ProductForm(instance=product, is_edit=True)
+        productform = ProductForm(instance=product, is_edit=True)
+    return render(request, template_name, {'title': 'SCJM-Actualizar Producto', 'title_form': "Actualizar Producto", 'form': productform})
 
-    form_inventory.fields['unity'].disabled = True  # Desactivar el campo 'unity'
-    form_inventory.fields['category'].disabled = True  # Desactivar el campo 'category'
-    form_inventory.fields['stock'].disabled = True  # Desactivar el campo 'category'
-
-    template_name = 'inventory/inventory_form.html'
-
-    return render(request, template_name, {'title': 'SCJM-Actualizar Producto', 'title_form': "Actualizar Producto", 'form': form_inventory})
 
 @login_required(login_url='/account/login/')
 def createUnityView (request):
