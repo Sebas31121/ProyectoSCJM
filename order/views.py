@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from inventory.models import Product
-from .models import Pedido
+from .models import Pedido, ProductOrder
 from table.models import Mesa
 from order.order import Order
 
@@ -44,12 +44,12 @@ def OrderSaveView(request):
     mesa = Mesa.objects.get(nro_mesa=int(data_table))
     order = Pedido.objects.create(nro_mesa=mesa)
     productos_asignados = []
-    print(data_products)
     for product in data_products:
         data_order = DataOrder(id=product["Id"], price=product["price"], table_number=int(data_table))
-        products = Product.objects.filter(id=data_order.id)
-        productos_asignados.extend(products)
-    order.productos.set(productos_asignados)
+        products = Product.objects.filter(id=data_order.id)[0]
+        productos_asignados.append(products.id)
+        productorder = ProductOrder.objects.create(product=products, order=order, amount=product["cantidad"])
+        productorder.save()
     order.estado = 1
     order.autor_usuario = request.user
     order.save()

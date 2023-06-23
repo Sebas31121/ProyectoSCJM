@@ -15,16 +15,20 @@ class Pedido(models.Model):
     fecha_hora = models.DateTimeField("Fecha y Hora", auto_now_add=True)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES)
     nro_mesa = models.ForeignKey(Mesa,on_delete=models.CASCADE,related_name="fkmesa")
-    productos = models.ManyToManyField(Product)
     autor_usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     total_pedido = models.FloatField("Total pedido", default=0)
 
+class ProductOrder(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=1) 
+
 @receiver(post_save, sender = Pedido)
 def sumar_total_pedido(sender,instance,**kwargs):
-    total = 0
-    for producto in instance.productos.all():
-        total = total + producto.price
-    instance.total_pedido = total
+    orderproducts = ProductOrder.objects.filter(order=instance)
+    for orderproduct in orderproducts:
+        producto = Product.objects.get(id=orderproduct.product_id)
+        instance.total_pedido = producto.price * orderproduct.amount
     post_save.disconnect(sumar_total_pedido, sender=Pedido)
     instance.save(update_fields=["total_pedido"])
     post_save.connect(sumar_total_pedido, sender=Pedido)
