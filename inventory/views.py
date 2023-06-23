@@ -4,6 +4,10 @@ from .forms import CategoryForm, ProductForm, UnityForm
 from .models import Category, Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.views.generic import View
+from reportlab.pdfgen import canvas
 
 @login_required(login_url='/accounts/login/')
 def createCategoryView (request):
@@ -53,6 +57,22 @@ class ListProductView(ListView):
     model = Product
     context_object_name = "products"
     queryset = Product.objects.filter(is_active=True)
+    ordering = ["price"]
+
+class DownloadPDFView(View):
+
+    def get(self, request):
+        products = Product.objects.filter(is_active=True)
+        html = render_to_string("inventory/inventory_list.html", {'products': products})
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="productos.pdf"'
+        p = canvas.Canvas(response)
+        p.drawString(100, 800, "Lista de productos:")
+        p.drawString(100, 780, "-" * 50)
+        p.drawString(100, 760, html)
+        p.showPage()
+        p.save()
+        return response
 
 @login_required(login_url='/account/login/')
 def editProductView(request, pk):
