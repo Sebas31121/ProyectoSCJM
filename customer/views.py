@@ -1,11 +1,26 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Cliente
 from .forms import CustomerForm
 from django.views.generic import ListView
 
+def is_staff(user):
+    if user.is_staff:
+        return True
+    else:
+        return False
+
+def check_staff_access(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not is_staff(request.user):
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper
+
+@check_staff_access
 @login_required(login_url='/account/login/')
 def createCustomerView (request):
     template_name='customer/customer_view.html'
@@ -20,6 +35,7 @@ def createCustomerView (request):
         return HttpResponseRedirect('/customer/list')
     return render(request,template_name,{'title':'SCJM-Crear cliente','title_form':"Crear cliente",'form':form_customer})
 
+@check_staff_access
 @login_required(login_url='/account/login/')
 def editCustomerView (request, pk):
     cliente = get_object_or_404(Cliente, id=pk)
@@ -31,6 +47,7 @@ def editCustomerView (request, pk):
         return HttpResponseRedirect('/customer/list')
     return render(request,template_name,{'title':'SCJM-Actualizar cliente','title_form':"Actualizar cliente",'form':clienteform})
 
+@check_staff_access
 @login_required(login_url='/account/login/')
 def deleteCustomerView(request, pk):
     cliente = get_object_or_404(Cliente, id=pk)

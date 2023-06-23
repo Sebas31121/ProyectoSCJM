@@ -16,11 +16,13 @@
         input {
             border: none;
             outline: none;
+            border-radius: 0.5rem;
         }
 
         button {
             border: none;
             outline: none;
+            border-radius: 0.5rem;
         }
 
         #imgs {
@@ -37,12 +39,6 @@
             height: 100%;
             text-align: center;
         }
-
-        input {
-            border-radius: 1rem;
-            border: none;
-            outline: none;
-        }
     </style>
 </head>
 
@@ -54,9 +50,9 @@
         <img src="{% static 'img/avatars/mulata.jpg'%}" style="width: 25%;height: 25%; border-radius: 4rem;">
     </div><br>
     <label for="">MESA: </label><br>
-    <input type="search" placeholder="Ingrese el número de la mesa" id="nro_mesa">
-    <a id="boton_mesa"><button>IR</button></a><br><br>
-    <a href="{% url 'index' %}"><button>Volver</button></a><br><br>
+    <input type="number" placeholder="Ingrese el número de la mesa" id="nro_mesa">
+    <a id="boton_mesa"><button >IR</button></a><br><br>
+    <a href="{% url 'index' %}"><button class="btn btn-secondary mb-4">Volver</button></a>
     <h3>:D</h3>
 </body>
 <script>

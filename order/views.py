@@ -10,6 +10,15 @@ from .models import Pedido
 from table.models import Mesa
 from order.order import Order
 
+def access_mesero(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not request.user.groups.filter(name='Meseros').exists():
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper
+
+@access_mesero
 @login_required(login_url='/accounts/login/')
 def OrderView(request):
     template_name = 'order/products_waiter.html'
@@ -18,17 +27,16 @@ def OrderView(request):
         'title': 'SCJM-Guardar Pedido',
         'all_products': active_products
     }
-
     return render(request, template_name, context)
 
 class DataOrder(BaseModel):
     id: int
     price: float
     table_number: int
-
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
 @require_http_methods(["POST"])
+@access_mesero
 def OrderSaveView(request):
     data = json.loads(request.body.decode("utf-8"))
     data_products = data.get("products")
@@ -36,6 +44,7 @@ def OrderSaveView(request):
     mesa = Mesa.objects.get(nro_mesa=int(data_table))
     order = Pedido.objects.create(nro_mesa=mesa)
     productos_asignados = []
+    print(data_products)
     for product in data_products:
         data_order = DataOrder(id=product["Id"], price=product["price"], table_number=int(data_table))
         products = Product.objects.filter(id=data_order.id)
@@ -54,35 +63,15 @@ def OrderSaveView(request):
         print("La orden no se guardó correctamente.")
     return JsonResponse({"success": success})
 
+@access_mesero
 @login_required(login_url='/accounts/login/')
 def preView(request):
     template_name='order/waiter.html'
     producto= Product.objects.all()
     return render(request, template_name, {'productos': producto})
 
-
 def order_process(request, producto_id, method):
     order = Order(request)
     producto = Product.objects.get(id=producto_id)
     getattr(order, method)(producto)
     return redirect("order:products_waiter")
-
-
-@login_required(login_url='/accounts/login/')
-def agregar_producto(request, producto_id):
-    return order_process(request, producto_id, 'agregar')
-
-
-@login_required(login_url='/accounts/login/')
-def eliminar_producto(request, producto_id):
-    return order_process(request, producto_id, 'eliminar_order')
-
-
-@login_required(login_url='/accounts/login/')
-def restar_producto(request, producto_id):
-    return order_process(request, producto_id, 'restar')
-
-
-@login_required(login_url='/accounts/login/')
-def limpiar_producto(request, producto_id):
-    return order_process(request, producto_id, 'limpiar')

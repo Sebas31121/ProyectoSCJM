@@ -1,11 +1,26 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Mesa
 from .forms import MesaForm
 from django.views.generic import ListView
 
+def is_staff(user):
+    if user.is_staff:
+        return True
+    else:
+        return False
+
+def check_staff_access(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not is_staff(request.user):
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper
+
+@check_staff_access
 @login_required(login_url='/account/login/')
 def createMesaView (request):
     template_name='table/table_view.html'
@@ -20,6 +35,7 @@ def createMesaView (request):
         return HttpResponseRedirect('/table/list')
     return render(request,template_name,{'title':'SCJM-Crear Mesa','title_form':"Crear Mesa",'form':form_mesa})
 
+@check_staff_access
 @login_required(login_url='/account/login/')
 def editMesaView (request, pk):
     mesa = get_object_or_404(Mesa, id=pk)
@@ -31,6 +47,7 @@ def editMesaView (request, pk):
         return HttpResponseRedirect('/table/list')
     return render(request,template_name,{'title':'SCJM-Actualizar Mesa','title_form':"Actualizar Mesa",'form':mesaform})
 
+@check_staff_access
 @login_required(login_url='/account/login/')
 def deleteMesaView(request, pk):
     mesa = get_object_or_404(Mesa, id=pk)

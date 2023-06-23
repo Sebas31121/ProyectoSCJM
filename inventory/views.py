@@ -9,6 +9,21 @@ from django.template.loader import render_to_string
 from django.views.generic import View
 from reportlab.pdfgen import canvas
 
+def is_staff(user):
+    if user.is_staff:
+        return True
+    else:
+        return False
+
+def check_staff_access(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not is_staff(request.user):
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper
+
+@check_staff_access
 @login_required(login_url='/accounts/login/')
 def createCategoryView (request):
     template_name='inventory/inventory_form.html'
@@ -24,6 +39,7 @@ def createCategoryView (request):
 
     return render(request,template_name,{'title':'SCJM-Crear Categoria','title_form':"Crear Categoria",'form':form_inventory})
 
+@check_staff_access
 @login_required(login_url='/accounts/login/')
 def editCategoryView (request,pk):
     category = get_object_or_404(Category,id=pk)
@@ -36,6 +52,7 @@ def editCategoryView (request,pk):
 
     return render(request,template_name,{'title':'SCJM-Actualizar Categoria','title_form':"Actualizar Categoria",'form':categoryform,"obj":category})
 
+@check_staff_access
 @login_required(login_url='/account/login/')
 def createProductView(request):
     template_name = 'inventory/inventory_form.html'
@@ -60,7 +77,6 @@ class ListProductView(ListView):
     ordering = ["price"]
 
 class DownloadPDFView(View):
-
     def get(self, request):
         products = Product.objects.filter(is_active=True)
         html = render_to_string("inventory/inventory_list.html", {'products': products})
@@ -73,7 +89,8 @@ class DownloadPDFView(View):
         p.showPage()
         p.save()
         return response
-
+    
+@check_staff_access
 @login_required(login_url='/account/login/')
 def editProductView(request, pk):
     product = get_object_or_404(Product, id=pk)
@@ -88,7 +105,7 @@ def editProductView(request, pk):
         productform = ProductForm(instance=product, is_edit=True)
     return render(request, template_name, {'title': 'SCJM-Actualizar Producto', 'title_form': "Actualizar Producto", 'form': productform})
 
-
+@check_staff_access
 @login_required(login_url='/account/login/')
 def createUnityView (request):
     template_name='inventory/inventory_form.html'
@@ -103,6 +120,7 @@ def createUnityView (request):
             return HttpResponseRedirect('/inventory/list/product')
     return render(request,template_name,{'title':'SCJM-Crear Unidad de medida','title_form':"Crear unidad de medida",'form':form_inventory})
 
+@check_staff_access
 @login_required(login_url='/account/login/')
 def deleteProductView(request, pk):
     product = get_object_or_404(Product, id=pk)
@@ -111,6 +129,7 @@ def deleteProductView(request, pk):
     messages.success(request=request, message="Este producto se eliminó con éxito")
     return HttpResponseRedirect('/inventory/list/product')
 
+@check_staff_access
 @login_required(login_url='/account/login/')
 def product_detail(request, pk):
     product = get_object_or_404(Product, id=pk)
