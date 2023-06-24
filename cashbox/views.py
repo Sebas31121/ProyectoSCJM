@@ -16,13 +16,10 @@ def access_barra(view_func):
 @login_required(login_url='/accounts/login/')
 def cashbox(request):
     tables = Mesa.objects.all().order_by('nro_mesa')
-    orders = []
-    for table in tables:
-        try:
-            latest_order = Pedido.objects.filter(nro_mesa=table).latest('fecha_hora')
-            orders.append(latest_order)
-        except Pedido.DoesNotExist:
-            orders.append(None)
-    combined_data = zip(tables, orders)
-    context = {'combined_data': combined_data}
+    context = {'tables': tables}
     return render(request, 'cashbox/caja.html', context)
+
+@login_required(login_url='/accounts/login/')
+def searchOrder(request, pk):
+    table_number = Mesa.objects.filter(id=pk)
+    Pedido.objects.filter(nro_mesa=table_number)

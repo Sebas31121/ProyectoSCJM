@@ -185,21 +185,24 @@
 
                 if (response.ok) {
                     const responseData = await response.json();
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Pedido creado con éxito'
-                    });
-                } else {
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Error al enviar el pedido'
-                    });
+                    if (responseData.success == true) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: responseData.message
+                        });
+                    }
+                    else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: responseData.message
+                        });
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
                 Toast.fire({
                     icon: 'error',
-                    title: 'Error al enviar el pedido'
+                    title: error
                 });
             }
         }

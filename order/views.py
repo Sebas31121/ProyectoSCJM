@@ -33,6 +33,7 @@ class DataOrder(BaseModel):
     id: int
     price: float
     table_number: int
+
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -49,11 +50,18 @@ def OrderSaveView(request):
         products = Product.objects.filter(id=data_order.id)[0]
         productos_asignados.append(products.id)
         productorder = ProductOrder.objects.create(product=products, order=order, amount=product["cantidad"])
-        productorder.save()
+        product = Product.objects.get(id=data_order.id)
+        if product.stock >= productorder.amount:
+            product.stock -= productorder.amount
+            product.save()
+            return JsonResponse({"success": True, "message": "Pedido creado con éxito"})
+        else:
+            productorder.delete()
+            order.delete()
+            return JsonResponse({"success": False, "message": "Cantidad solicitada mayor que el stock disponible."})
     order.estado = 1
     order.autor_usuario = request.user
     order.save()
-    # Verificación
     try:
         order_verify = Pedido.objects.get(id=order.id)
         success = order_verify is not None

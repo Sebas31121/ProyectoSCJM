@@ -19,13 +19,13 @@
         <h1>Caja</h1>
     </center>
     <section style="display:flex;justify-content:space-around;flex-wrap:wrap;align-content:space-around;">
-        {% for table, order in combined_data %}
+        {% for table in tables %}
         <div class="card mt-3" style="width: 10rem; border-radius: 3rem;">
             <div class="card-body">
                 <center>
                     <h4 class="card-title">Mesa #{{ table.nro_mesa }}</h4>
                     <p class="card-text" style="color:#85bb65"><b>${{ order.total_pedido }}</b></p>
-                    {% if order %}
+                    {% if table.is_active %}
                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ order.id }}">Ver
                         pedido</a>
                     {% else %}
