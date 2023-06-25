@@ -12,20 +12,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-
 <body>
     {% block page_content%}
     <center>
         <h1>Caja</h1>
     </center>
     <section style="display:flex;justify-content:space-around;flex-wrap:wrap;align-content:space-around;">
-        {% for table in tables %}
+        {% for table, order in combined_data %}
         <div class="card mt-3" style="width: 10rem; border-radius: 3rem;">
             <div class="card-body">
                 <center>
                     <h4 class="card-title">Mesa #{{ table.nro_mesa }}</h4>
                     <p class="card-text" style="color:#85bb65"><b>${{ order.total_pedido }}</b></p>
-                    {% if table.is_active %}
+                    {% if order %}
                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ order.id }}">Ver
                         pedido</a>
                     {% else %}
@@ -34,7 +33,6 @@
                 </center>
             </div>
         </div>
-
         <!-- Modal -->
         <div class="modal fade" id="modal{{ order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -55,7 +53,6 @@
                     <div class="modal-body" style="text-align: center;">
                         <h5>Realizado por: <b>{{ order.autor_usuario.username }}</b></h5>
                     </div>
-
                     <div class="modal-body">
                         <ul>
                             <h5>Productos:</h5>
@@ -86,5 +83,4 @@
     </script>
     {% endblock page_content %}
 </body>
-
 </html>
