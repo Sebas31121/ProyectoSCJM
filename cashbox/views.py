@@ -1,5 +1,6 @@
 import json
 from django.http import JsonResponse
+from django.core import serializers
 from django.shortcuts import render, redirect
 from table.models import Mesa
 from django.views.decorators.csrf import csrf_exempt
@@ -15,20 +16,29 @@ def access_barra(view_func):
             return view_func(request, *args, **kwargs)
     return wrapper
 
-@access_barra
-@login_required(login_url='/accounts/login/')
-def cashbox(request):
+
+def get_orders(request):
     tables = Mesa.objects.all().order_by('nro_mesa')
     orders = []
     for table in tables:
         try:
-            latest_order = Pedido.objects.filter(nro_mesa=table,estado=1).latest('fecha_hora')
+            latest_order = Pedido.objects.filter(nro_mesa=table, estado=1).latest('fecha_hora')
             orders.append(latest_order)
         except Pedido.DoesNotExist:
             orders.append(None)
     combined_data = zip(tables, orders)
-    context = {'combined_data': combined_data}
-    return render(request, 'cashbox/caja.html', context)
+    
+    
+    combined_list = [(str(table), serializers.serialize('json', [order]) if order else None) for table, order in combined_data]
+    
+    # return como JSON response
+    return JsonResponse(combined_list, safe=False)
+
+
+@access_barra
+@login_required(login_url='/accounts/login/')
+def cashbox(request):
+    return render(request, 'cashbox/caja.html')
 
 @csrf_exempt
 def paidOrder(request):
