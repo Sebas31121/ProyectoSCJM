@@ -9,6 +9,7 @@ from inventory.models import Product
 from .models import Pedido, ProductOrder
 from table.models import Mesa
 from order.order import Order
+from django.db import transaction
 
 def access_mesero(view_func):
     def wrapper(request, *args, **kwargs):
@@ -43,26 +44,31 @@ def OrderSaveView(request):
     data_products = data.get("products")
     data_table = data.get("table_number")
     mesa = Mesa.objects.get(nro_mesa=int(data_table))
-    order = Pedido.objects.create(nro_mesa=mesa)
-    productos_asignados = []
-    for product in data_products:
-        data_order = DataOrder(id=product["Id"], price=product["price"], table_number=int(data_table))
-        products = Product.objects.filter(id=data_order.id)[0]
-        productos_asignados.append(products.id)
-        productorder = ProductOrder.objects.create(product=products, order=order, amount=product["cantidad"])
-        productorder.save()
-    order.estado = 1
-    order.autor_usuario = request.user
-    order.save()
-    # Verificación
-    try:
-        order_verify = Pedido.objects.get(id=order.id)
-        success = order_verify is not None
-        print(f"La orden {order.id} fue guardada correctamente: ", success)
-    except Pedido.DoesNotExist:
-        success = False
-        print("La orden no se guardó correctamente.")
-    return JsonResponse({"success": success})
+    with transaction.atomic():
+        order = Pedido.objects.create(nro_mesa=mesa)
+        productos_asignados = []
+        for product in data_products:
+            data_order = DataOrder(id=product["Id"], price=product["price"], table_number=int(data_table))
+            products = Product.objects.get(id=data_order.id)
+            if products.stock >= product["cantidad"]:
+                products.stock -= product["cantidad"]
+                products.save()
+                productos_asignados.append(products.id)
+                productorder = ProductOrder.objects.create(product=products, order=order, amount=product["cantidad"])
+                productorder.save()
+            else:
+                return JsonResponse({"success": False, "message": f"No hay suficiente stock para el producto: {products.name}"})
+        order.estado = 1
+        order.autor_usuario = request.user
+        order.save()
+        try:
+            order_verify = Pedido.objects.get(id=order.id)
+            success = order_verify is not None
+            print(f"La orden {order.id} fue guardada correctamente: ", success)
+        except Pedido.DoesNotExist:
+            success = False
+            print("La orden no se guardó correctamente.")
+        return JsonResponse({"success": success})
 
 @access_mesero
 @login_required(login_url='/accounts/login/')

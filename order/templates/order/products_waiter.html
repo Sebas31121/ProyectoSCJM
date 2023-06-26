@@ -96,12 +96,11 @@
                     </div>
                     <div class="modal-body" style="display:flex;flex-direction: column; align-items: flex-start;">
                         <h5>Productos:</h5>
-                        <ul style="text-align: left;">
-                            <h5>Productos:</h5>
-                            {% for product in all_products %}
-                            <li>{{ product.name }}: ${{ product.price }}</li>
+                        <ul>
+                            {% for producto in order.productos.all %}
+                            <li>{{ producto.name }}: ${{ producto.price }}</li>
                             {% endfor %}
-                            <b>Total: ${{ pedido.total_pedido }}</b>
+                            Total: ${{ order.total_pedido }}
                         </ul>
                     </div>
                     <div class="modal-footer">
@@ -189,7 +188,7 @@
                     if (responseData.success == true) {
                         Toast.fire({
                             icon: 'success',
-                            title: responseData.message
+                            title: 'Pedido creado con éxito'
                         });
                     }
                     else {
