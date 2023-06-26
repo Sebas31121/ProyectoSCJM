@@ -96,11 +96,12 @@
                     </div>
                     <div class="modal-body" style="display:flex;flex-direction: column; align-items: flex-start;">
                         <h5>Productos:</h5>
-                        <ul>
-                            {% for producto in order.productos.all %}
-                            <li>{{ producto.name }}: ${{ producto.price }}</li>
+                        <ul style="text-align: left;">
+                            <h5>Productos:</h5>
+                            {% for product in all_products %}
+                            <li>{{ product.name }}: ${{ product.price }}</li>
                             {% endfor %}
-                            Total: ${{ order.total_pedido }}
+                            <b>Total: ${{ pedido.total_pedido }}</b>
                         </ul>
                     </div>
                     <div class="modal-footer">

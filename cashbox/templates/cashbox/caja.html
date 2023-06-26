@@ -55,17 +55,15 @@
                     </div>
                     <div class="modal-body">
                         <ul>
-                            <h5>Productos:</h5>
                             {% for producto in order.productos.all %}
                             <li>{{ producto.name }}: ${{ producto.price }}</li>
                             {% endfor %}
-                            <b>Total: ${{ order.total_pedido }}</b>
+                            Total: ${{ order.total_pedido }}
+                            
                         </ul>
                     </div>
                     <div class="modal-footer" style="display:flex;justify-content: space-around">
                         <input class="form-control mb-4" type="text">
-                        <input type="checkbox" name="myCheckbox">
-                        <a href="{{ pdf_url }}" target="_blank">Descargar factura en PDF</a>
                         <button type="button" class="btn btn-success">Pagar</button>
                         <button type="button" class="btn btn-warning">Reversar</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>

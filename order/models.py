@@ -21,16 +21,14 @@ class Pedido(models.Model):
 class ProductOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    amount = models.IntegerField(default=1)
+    amount = models.IntegerField(default=1) 
 
-@receiver(post_save, sender=Pedido)
-def sumar_total_pedido(sender, instance, **kwargs):
+@receiver(post_save, sender = Pedido)
+def sumar_total_pedido(sender,instance,**kwargs):
     orderproducts = ProductOrder.objects.filter(order=instance)
-    total = 0
     for orderproduct in orderproducts:
         producto = Product.objects.get(id=orderproduct.product_id)
-        total += producto.price * orderproduct.amount
-    instance.total_pedido = total
+        instance.total_pedido = producto.price * orderproduct.amount
     post_save.disconnect(sumar_total_pedido, sender=Pedido)
     instance.save(update_fields=["total_pedido"])
     post_save.connect(sumar_total_pedido, sender=Pedido)
@@ -41,7 +39,6 @@ def verificacion_estado_pedido(sender, instance, **kwargs):
         latest_order = Pedido.objects.filter(nro_mesa=instance.nro_mesa).latest('fecha_hora')
     except Pedido.DoesNotExist:
         latest_order = None
-
     if latest_order.estado == "3":
         raise ValueError("No se permite enviar más datos cuando el estado es 3.")
     else:
