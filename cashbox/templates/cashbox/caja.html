@@ -40,7 +40,7 @@
             .then(data => {
                 // Convertir los datos a un formato de string para poder compararlos.
                 const currentData = JSON.stringify(data);
-
+                
                 // Si los datos no han cambiado, no se hace nada.
                 if (currentData === lastData) {
                     return;
@@ -52,12 +52,10 @@
                 let html = '';
                 
                 for (let i = 0; i < data.length; i++) {
-                    //let table = data[i][0];
-                    let order = JSON.parse(data[i][1]);
-                    let orderId = order ? order[0].pk : null;
-                    let totalPedido = order ? order[0].fields.total_pedido : '';
-                    let authorUsername = order ? order[0].fields.autor_usuario : '';
-                    let nro_mesa = order ? order[0].fields.nro_mesa : '';
+                    console.log(data)
+                    let nro_mesa = data[i].nro_mesa
+                    let totalPedido = data[i].total_pedido
+                    let orderId = data[i].id
 
                     html += `
                     <div class="card mt-3" style="width: 10rem; border-radius: 3rem;">
@@ -65,7 +63,7 @@
                             <center>
                                 <h4 class="card-title">Mesa #${nro_mesa}</h4>
                                 <p class="card-text" style="color:#85bb65"><b>$${totalPedido}</b></p>
-                                ${order ? `<a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal${orderId}">Ver pedido</a>` : '<p>No hay pedido</p>'}
+                                ${data ? `<a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal${orderId}">Ver pedido</a>` : '<p>No hay pedido</p>'}
                             </center>
                         </div>
                     </div>
@@ -87,11 +85,12 @@
                                     </select>
                                 </div>
                                 <div class="modal-body" style="text-align: center;">
-                                    <h5>Realizado por: <b>${authorUsername}</b></h5>
+                                    <h5>Realizado por: <b></b></h5>
                                 </div>
+                                <div id="productList" class="modal-body"></div>
+                                <p> Total: $${totalPedido}</p>
                                 <div class="modal-footer" style="display:flex;justify-content: space-around">
-                                    <input class="form-control mb-4" type="text">
-                                    <input type="checkbox" name="myCheckbox">
+                                    
                                     <button type="button" class="btn btn-success" onclick="paidOrder(${orderId})">Pagar</button>
                                     <button type="button" class="btn btn-warning">Reversar</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
@@ -102,9 +101,31 @@
                 }
 
                 ordersContainer.innerHTML = html;
+
+                const productListContainer = document.getElementById("productList");
+
+                // Limpiar el contenido existente
+                productListContainer.innerHTML = "";
+
+                // Iterar sobre los datos recibidos
+                data.forEach(order => {
+                    const products = order.products;
+                    // Crear un elemento <ul> para los productos
+                    const productList = document.createElement("ul");
+
+                    // Iterar sobre los productos y crear elementos <li>
+                    products.forEach(product => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = `${product.name}: $${product.price}`;
+                        productList.appendChild(listItem);
+                    });
+
+                    // Agregar la lista de productos al contenedor del modal
+                    productListContainer.appendChild(productList);
+                });
             });
 
-        }, 1000);
+        }, 2000);
 
         function paidOrder(pk_order){
             fetch('/order/paid/', {

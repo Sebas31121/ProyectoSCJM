@@ -23,16 +23,29 @@ def get_orders(request):
     for table in tables:
         try:
             latest_order = Pedido.objects.filter(nro_mesa=table, estado=1).latest('fecha_hora')
-            orders.append(latest_order)
+
+            products_order = ProductOrder.objects.filter(order=latest_order)
+            product_list = [
+                {
+                    'name': product_order.product.name,
+                    'price': float(product_order.product.price),
+                } for product_order in products_order
+            ]
+            
+            orders.append({
+                'id': latest_order.id,
+                #'fecha_hora': latest_order.fecha_hora.strftime('%Y-%m-%d %H:%M:%S'),
+                'estado': latest_order.get_estado_display(),
+                'nro_mesa': latest_order.nro_mesa.nro_mesa,
+                #'autor_username': latest_order.autor_usuario.username,
+                'total_pedido': float(latest_order.total_pedido),
+                'products': product_list
+            })
         except Pedido.DoesNotExist:
-            orders.append(None)
-    combined_data = zip(tables, orders)
-    
-    
-    combined_list = [(str(table), serializers.serialize('json', [order]) if order else None) for table, order in combined_data]
+            print("PEDIDO NO EXISTE")
     
     # return como JSON response
-    return JsonResponse(combined_list, safe=False)
+    return JsonResponse(orders, safe=False)
 
 
 @access_barra
