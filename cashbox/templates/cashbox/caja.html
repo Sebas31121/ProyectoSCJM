@@ -68,7 +68,7 @@
                         <input class="form-control mb-4" type="text">
                         <input type="checkbox" name="myCheckbox">
                         <a href="{{ pdf_url }}" target="_blank">Descargar factura en PDF</a>
-                        <button type="button" class="btn btn-success">Pagar</button>
+                        <button type="button" class="btn btn-success" onclick="paidOrder({{order.id}})">Pagar</button>
                         <button type="button" class="btn btn-warning">Reversar</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                     </div>
@@ -82,6 +82,16 @@
         setInterval(function () {
             window.location.reload();
         }, 25000);
+
+        function paidOrder(pk_order){
+            fetch('/order/paid/', {
+                method: "POST",
+                body: JSON.stringify({"pk_order":pk_order}),
+                headers: {"Content-type": "application/json;charset=UTF-8"}
+            }).then(response => response.json()) .then(json => console.log(json));
+        }
+
+        
     </script>
     {% endblock page_content %}
 </body>
