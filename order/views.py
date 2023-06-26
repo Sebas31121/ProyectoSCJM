@@ -24,9 +24,14 @@ def access_mesero(view_func):
 def OrderView(request):
     template_name = 'order/products_waiter.html'
     active_products = Product.objects.filter(is_active=True)
+    try:
+        latest_order = Pedido.objects.latest('fecha_hora')
+    except Pedido.DoesNotExist:
+        latest_order = None
     context = {
         'title': 'SCJM-Guardar Pedido',
-        'all_products': active_products
+        'all_products': active_products,
+        'latest_order': latest_order,
     }
     return render(request, template_name, context)
 

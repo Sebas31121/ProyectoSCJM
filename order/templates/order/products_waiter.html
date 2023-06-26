@@ -92,17 +92,23 @@
                         <i class='bx bx-purchase-tag-alt' style="font-size:2.5rem; cursor:pointer;"></i>
                     </div>
                     <div class="modal-body">
-                        <h5>Realizado por: {{ order.autor_usuario.username }}</h5>
+                        {% if latest_order %}
+                        <h5>Realizado por: {{ latest_order.autor_usuario.username }}</h5>
+                        {% else %}
+                        <h5>No hay pedidos disponibles</h5>
+                        {% endif %}
                     </div>
+                    {% if latest_order %}
                     <div class="modal-body" style="display:flex;flex-direction: column; align-items: flex-start;">
-                        <h5>Productos:</h5>
                         <ul>
-                            {% for producto in order.productos.all %}
-                            <li>{{ producto.name }}: ${{ producto.price }}</li>
+                            <h5>Productos:</h5>
+                            {% for product_order in latest_order.productorder_set.all %}
+                            <li>{{ product_order.amount }} {{ product_order.product.name }}</li>
                             {% endfor %}
-                            Total: ${{ order.total_pedido }}
+                            <b>Total: ${{ latest_order.total_pedido }}</b>
                         </ul>
                     </div>
+                    {% endif %}
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                     </div>
