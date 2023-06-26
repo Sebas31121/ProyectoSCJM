@@ -14,7 +14,7 @@ class Pedido(models.Model):
     )
     fecha_hora = models.DateTimeField("Fecha y Hora", auto_now_add=True)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES)
-    nro_mesa = models.ForeignKey(Mesa,on_delete=models.CASCADE,related_name="fkmesa")
+    nro_mesa = models.ForeignKey(Mesa, on_delete=models.CASCADE, related_name="fkmesa")
     autor_usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     total_pedido = models.FloatField("Total pedido", default=0)
 

@@ -55,12 +55,11 @@
                     <div class="modal-body" style="text-align: center;">
                         <h5>Realizado por: <b>{{ order.autor_usuario.username }}</b></h5>
                     </div>
-
                     <div class="modal-body">
                         <ul>
                             <h5>Productos:</h5>
-                            {% for producto in order.productos.all %}
-                            <li>{{ producto.name }}: ${{ producto.price }}</li>
+                            {% for product_order in order.productorder_set.all %}
+                            <li>{{product_order.amount}} {{ product_order.product.name }}: ${{ product_order.product.price }}</li>
                             {% endfor %}
                             <b>Total: ${{ order.total_pedido }}</b>
                         </ul>
